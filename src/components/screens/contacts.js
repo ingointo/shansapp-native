@@ -32,7 +32,7 @@ export default function Contacts({ navigation }) {
     }, []);
 
     useEffect(() => {
-        // Filter the names based on the search query
+        
         if (searchQuery) {
         axios.get(searchurl + searchQuery)
             .then((res) => {
@@ -52,6 +52,8 @@ export default function Contacts({ navigation }) {
     const onChangeSearch = (query) => {
         setSearchQuery(query);
     };
+
+    console.log(names)
 
     return (
         <View>
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
     fab: {
         position: 'absolute',
         right: 28,
-        bottom: 200,
+        bottom: -300,
         backgroundColor: '#ffa600',
         borderRadius: 30,
         width: 60,
