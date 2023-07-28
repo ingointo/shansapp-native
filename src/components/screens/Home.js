@@ -5,7 +5,7 @@ import { FAB } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from "../custombutton";
-import Contacts from "./contacts";
+
 
 export default function Home({navigation}) {
     return (
@@ -18,9 +18,9 @@ export default function Home({navigation}) {
         </View>
 
         <View style={styles.search}>
-            <FontAwesome name="search" size={24} color="white" />
-            <Text style={styles.searchtext}>What are you looking for ?</Text>
-            <AntDesign name="barcode" size={24} color="white" />
+            <FontAwesome name="search" size={22} color="white" />
+            <CustomButton title="What are you looking for ?" textcolor="white"  onPress={()=> navigation.navigate('OptionScreen')}/>
+            <AntDesign name="barcode" size={22} color="white" />
         </View>
 
         <View>
@@ -95,9 +95,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         borderWidth: 1,
         borderRadius: 15,
-        paddingTop: 13,
-        paddingBottom: 13,
-        paddingHorizontal: 7,
+        padding: 5,
         justifyContent: 'space-evenly',
         width: 350,
         backgroundColor: '#222222',

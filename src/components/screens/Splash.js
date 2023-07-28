@@ -6,6 +6,8 @@ import * as Font from 'expo-font';
 import { useNavigation } from '@react-navigation/native';
 // import RegistrationScreen from './RegistrationScreen'; // Assuming RegistrationScreen uses navigation
 import LoginScreen from './LoginScreen';
+import OptionScreen from './OptionScreen';
+import BottomDrawer from '../../routes/BottomDrawer';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -23,7 +25,7 @@ const Splash = () => {
         await Font.loadAsync(Entypo.font);
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 20));
       } catch (e) {
         console.warn(e);
       } finally {
@@ -47,7 +49,8 @@ const Splash = () => {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <LoginScreen navigation={navigation} />
+      {/* <LoginScreen navigation={navigation} /> */}
+      <BottomDrawer/>
     </View>
   )
 }
