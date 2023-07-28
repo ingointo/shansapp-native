@@ -44,11 +44,11 @@ const LoginScreen = ({ navigation }) => {
           user_name: inputs.user_name,
           password: inputs.password,
         });
-        console.log('Server Response:', response.data); // Log the server response
+        // console.log('Server Response:', response.data); // Log the server response
         if (response.data.success === "true") {
           const userData = response.data.data[0]; // Access the first user object in the 'data' array
-          console.log('User Input:', inputs); // Log the user input
-          console.log('User Data:', userData); // Log the user data received from the server
+          // console.log('User Input:', inputs); // Log the user input
+          // console.log('User Data:', userData); // Log the user data received from the server
           if (
             inputs.user_name === userData.user_name &&
             inputs.password === userData.password
