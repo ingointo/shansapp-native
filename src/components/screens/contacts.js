@@ -67,6 +67,8 @@ export default function Contacts({ navigation }) {
             borderRadius: 0,
             borderWidth: 12,
             borderColor: '#ffa600',
+            backgroundColor:"white",
+            
             }}
         />
 

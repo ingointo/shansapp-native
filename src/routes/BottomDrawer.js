@@ -5,7 +5,7 @@ import CategoriesScreen from "../components/screens/Categories";
 import MyOrdersScreen from "../components/screens/Myorders";
 import DashScreen from "../components/screens/Dashboard";
 import { MaterialIcons } from '@expo/vector-icons';
-import Homestack from "./HomeStack";
+import Home from "../components/screens/Home";
 
 const Tab = createBottomTabNavigator();
 
@@ -56,7 +56,7 @@ export default function BottomDrawer() {
             })}
 
         >
-            <Tab.Screen name="Home" component={Homestack} options={{ headerShown: false, }} />
+            <Tab.Screen name="Home" component={Home} options={{ headerShown: false, }} />
             <Tab.Screen name="Categories" component={CategoriesScreen} options={{ headerShown: false, }} />
             <Tab.Screen name="Dash" component={DashScreen} options={{ headerShown: false, }} />
             <Tab.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false, }} />
