@@ -14,18 +14,22 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Addcontact from "./src/components/screens/addcontacts";
 import OptionScreen from "./src/components/screens/OptionScreen";
 import ContactDetails from "./src/components/screens/ContactDetails";
+import { useNavigation } from "@react-navigation/native";
+
 
 const Stack = createNativeStackNavigator();
 
+
 const App = () => {
+  
+
   return (
 
     <NavigationContainer>
       <View style={styles.container}>
         
         <Stack.Navigator screenOptions={({ route }) => ({
-                headerBackImage: () => <MaterialIcons name="arrow-back-ios" size={24} color="black" />,
-                tabBarVisible: route.name !== 'Contactsnav',
+                
                 headerStyle:{backgroundColor:'#ffa600'},
                 headerShadowVisible:false,
                 
@@ -36,11 +40,10 @@ const App = () => {
           <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
           <Stack.Screen name="Drawer" component={BottomDrawer} />
           <Stack.Screen name="Homenav" component={Home} options={{ headerShown: false, }} />
-          <Stack.Screen name="Contactsnav" component={Contacts} options={{ headerStyle: { backgroundColor: '#ffa600', }, headerTintColor: "white", title: "Contacts" }} />
+          <Stack.Screen name="Contactsviewnav" component={Contacts} options={{ headerStyle: { backgroundColor: '#ffa600', }, headerTintColor: "white", title: "Contacts" }} />
+          <Stack.Screen name="Contactdetails" component={ContactDetails} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerTintColor: "white", title: "Contact Details" }}/>
           <Stack.Screen name="addcontacts" component={Addcontact} options={{ headerStyle: { backgroundColor: '#ffa600', }, headerTintColor: "white", title: "Add Contacts" }} />
           <Stack.Screen name="OptionScreen" component={OptionScreen} options={{ headerStyle: { backgroundColor: '#ffa600' },headerShown:false, headerTintColor: "white", title: "Options" }} />
-          <Stack.Screen name="Contactdetails" component={ContactDetails} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerTintColor: "white", title: "Contact Details" }}/>
-          
         </Stack.Navigator>
       </View>
 

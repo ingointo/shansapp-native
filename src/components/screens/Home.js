@@ -5,9 +5,13 @@ import { FAB } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from "../custombutton";
+import { useNavigation } from "@react-navigation/native";
 
 
-export default function Home({navigation}) {
+export default function Home() {
+
+    const navigation=useNavigation();
+
     return (
         <View>
         <StatusBar backgroundColor="#ffa600" />
@@ -44,7 +48,7 @@ export default function Home({navigation}) {
 
             <View style={styles.buttonicon}>
                 <MaterialIcons name="contact-page" size={28} color="black" />
-                <CustomButton title="Contacts" color="#3c7dff" onPress={() => navigation.navigate("Contactsnav")} />
+                <CustomButton title="Contacts" color="#3c7dff" onPress={() => navigation.navigate('Contactsviewnav')} />
             </View>
         </View>
 

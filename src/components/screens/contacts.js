@@ -9,8 +9,8 @@ import ContactItem from "../contactitem";
 export default function Contacts({ navigation }) {
     const { fab } = styles;
 
-    const contacturl = 'http://137.184.67.138:3004/viewAllContacts';
-    const searchurl = 'http://137.184.67.138:3004/viewAllContacts?name=';
+    const contacturl = 'http://137.184.67.138:3004/viewCustomers';
+    const searchurl = 'http://137.184.67.138:3004/viewCustomers?name=';
 
     const [names, setNames] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -21,7 +21,7 @@ export default function Contacts({ navigation }) {
         .then((res) => {
             const namesArray = res.data.data.map((item) => ({
             name: item.name,
-            mobile: item.mobile,
+            customer_mobile: item.customer_mobile,
             _id: item._id,
             }));
             setNames(namesArray);
@@ -38,7 +38,7 @@ export default function Contacts({ navigation }) {
             .then((res) => {
             const filteredResults = res.data.data.map((item) => ({
                 name: item.name,
-                mobile: item.mobile,
+                customer_mobile: item.customer_mobile,
                 _id: item._id,
             }));
             setFilteredNames(filteredResults);

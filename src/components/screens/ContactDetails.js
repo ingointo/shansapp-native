@@ -11,7 +11,7 @@ export default  function ContactDetails({route}){
         <View style={styles.container}>
             <View style={styles.details}>
                 <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.mobile}>{item.mobile}</Text>
+                <Text style={styles.mobile}>{item.customer_mobile}</Text>
             </View>
             <MaterialIcons name="smartphone" size={35} color="black" />
         </View>
