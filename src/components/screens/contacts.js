@@ -5,12 +5,14 @@ import { FAB } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from "axios";
 import ContactItem from "../contactitem";
+import { baseUrl } from "../../api/const";
+
 
 export default function Contacts({ navigation }) {
     const { fab } = styles;
 
-    const contacturl = 'http://137.184.67.138:3004/viewCustomers';
-    const searchurl = 'http://137.184.67.138:3004/viewCustomers?name=';
+    const contacturl = `${baseUrl}/viewCustomers`;
+    const searchurl = `${contacturl}?name=`;
 
     const [names, setNames] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
     fab: {
         position: 'absolute',
         right: 28,
-        bottom: -350,
+        bottom: 350,
         backgroundColor: '#ffa600',
         borderRadius: 30,
         width: 60,
