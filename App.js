@@ -11,6 +11,9 @@ import Dashboard from "./src/components/screens/Dashboard";
 import BottomDrawer from "./src/routes/BottomDrawer";
 import Home from "./src/components/screens/Home";
 import Homestack from "./src/routes/HomeStack";
+import OptionScreen from "./src/components/screens/OptionScreen";
+import ProductScreen from "./src/components/screens/ProductScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -19,21 +22,20 @@ const App = () => {
 
     <NavigationContainer>
       <View style={styles.container}>
-        
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+
+        <Stack.Navigator screenOptions={{ headerShown: false, headerTintColor:"white" }}>
           <Stack.Screen name="Splash" component={Splash} />
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
           <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
           <Stack.Screen name="Drawer" component={BottomDrawer} />
-          
+          <Stack.Screen name="OptionScreen" component={OptionScreen} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, headerTintColor: "white", title: "Options" }} />
+          <Stack.Screen name="ProductScreen" component={ProductScreen} options={{headerStyle: { backgroundColor: '#ffa600'}, headerShown:true }}/>
         </Stack.Navigator>
       </View>
 
-      
-
     </NavigationContainer>
 
-    
+
 
   )
 }
