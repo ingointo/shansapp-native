@@ -55,7 +55,7 @@ export default function Contacts({ navigation }) {
         setSearchQuery(query);
     };
 
-    console.log(names)
+    // console.log(names)
 
     return (
         <View>

@@ -1,22 +1,34 @@
 import React from "react";
-import { StyleSheet,Text,View,TextInput,Alert,Button } from "react-native";
+import { StyleSheet,Text,View,TextInput,Button, ScrollView,TouchableOpacity,Alert } from "react-native";
 import baseUrl from "../../api/const"
 import { Formik } from "formik";
 import { Picker } from "@react-native-community/picker";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import * as Yup from 'yup';
+import { useNavigation } from "@react-navigation/native";
+
+export const AddSchema= Yup.object().shape({
+    name:Yup.string().required('Please enter your Name'),
+    customer_mobile:Yup.number().required('Please enter you Phone Number'),
+    customer_email:Yup.string().email('Invalid email').required("Please etner you email"),
+
+
+})
 
 
 
 
 
 export default function Addcontact(){
+    const contactUrl='http://137.184.67.138:3004/createCustomer';
     const languageUrl='http://137.184.67.138:3004/viewLanguage/language_list/language_dropdown';
     const stateUrl='http://137.184.67.138:3004/viewState/state_list/state_drop_down';
     const areaUrl='http://137.184.67.138:3004/viewArea/area_list/drop_down';
     const countryUrl='http://137.184.67.138:3004/viewCountry/country_list/country_dropdown';
     const currencyUrl='http://137.184.67.138:3004/viewCurrency/currency_list/currency_dropdown';
+    const navigation=useNavigation();
 
 
     const[language,setLanguage]=useState([]);
@@ -26,6 +38,7 @@ export default function Addcontact(){
     const[customerType, setCustomerType] = useState("");
     const[currency,setCurrency]=useState([]);
     const[customerTitle,setCustomerTitle]=useState("");
+    const[formsubmitted,setFormSubmitted]=useState(false)
 
     useEffect(()=>{
         axios.get(languageUrl).then((res)=>{
@@ -79,188 +92,293 @@ export default function Addcontact(){
     // console.log(country);
     
     return(
-        <Formik
-        initialValues={{name:'',customer_mobile:'',customer_email:'',whatsapp_no:'',
-        language_id:'',country_id:'',state_id:'',currency_id:'',area_id:'',address:'',
-        customer_title:'',trn_no:'',image_url:'',customer_type:''
-    }}
-    onSubmit={values=>console.log(values)}
-    >
+        <ScrollView style={styles.container}>
+                <Formik
+            initialValues={{name:'',customer_mobile:'',customer_email:'',whatsapp_no:'',
+            language_id:'',country_id:'',state_id:'',currency_id:'',area_id:'',address:'',
+            customer_title:'',trn_no:'',image_url:'',customer_type:''
+        }}
+        validationSchema={AddSchema}
+        onSubmit={(values,{seFromtSubmitted})=>{
+            console.log(values)
+            setFormSubmitted(true);
+            axios.post(contactUrl,values).then(
+                (res)=>{
+                    Alert.alert("Contact Successfully added")
+                    setFormSubmitted(false)
+                    navigation.navigate('Contactsviewnav');
+                    
+
+                }
+            ).catch((err)=>{
+                Alert.alert(err,"Contact not added")
+                setFormSubmitted(false);
+            })
+        
+        }}
+        >
 
 
 
-        {(props)=>(
-            <View>
-                <View style={styles.form}>
-                    <TextInput
-                            style={styles.input}
-                            placeholder="customer Name"
-                            onChangeText={props.handleChange('name')}
-                            value={props.values.name}
-                            />
-                    <TextInput
-                            style={styles.input}
-                            placeholder="Mobile"
-                            onChangeText={props.handleChange('customer_mobile')}
-                            keyboardType="numeric"
-                            value={props.values.customer_mobile}
-                            />
-                    <TextInput
-                            style={styles.input}
-                            placeholder="Whatsapp Number"
-                            onChangeText={props.handleChange('whatsapp_no')}
-                            keyboardType="numeric"
-                            value={props.values.whatsapp_no}
-                            />
-                    <TextInput
-                            style={styles.input}
-                            placeholder="Address"
-                            onChangeText={props.handleChange('address')}
-                            value={props.values.address}
-                            />
-                    <TextInput
-                            style={styles.input}
-                            placeholder="Email"
-                            onChangeText={props.handleChange('customer_email')}
-                            value={props.values.customer_email}
-                            />
-                    <TextInput
-                            style={styles.input}
-                            placeholder="TRN"
-                            onChangeText={props.handleChange('trn_no')}
-                            keyboardType="numeric"
-                            value={props.values.trn_no}
-                            />
-                    <Picker
-                        enabled={true}
-                        mode="dropdown"
-                        placeholder="Select language"
-                        onValueChange={props.handleChange('language_id')}
-                        selectedValue={props.values.language_id}
-                    >
-                        {language.map((item)=>{
-                            return (
-                                <Picker.Item
-                                    label={item.language_name.toString()}
-                                    value={item._id}
-                                    key={item._id}
-                                />
-                            )
-                        })}
+            {(props)=>(
+                
+                    <View style={styles.form}>
+                        <View>
+                            <Text style={styles.headingtext}>Customer Type:</Text>
+                            <View style={styles.dropinput}>
+                                <Picker
+                                    style={styles.input}
+                                    enabled={true}
+                                    mode="dropdown"
+                                    placeholder="Select Customer Type"
+                                    onValueChange={(itemValue)=>{
+                                        props.setFieldValue('customer_type', itemValue);
+                                        setCustomerType(itemValue)}}
+                                    selectedValue={props.values.customer_type}
+                                >
+                                    <Picker.Item label="Select Customer Type" value="" />
+                                    <Picker.Item label="B2B" value="b2b"/>
+                                    <Picker.Item label="B2C" value="b2c"/>
 
-                        
-                    </Picker>
-                    <Picker
-                        enabled={true}
-                        mode="dropdown"
-                        placeholder="Select State"
-                        onValueChange={props.handleChange('state_id')}
-                        selectedValue={props.values.state_id}
-                    >
-                        {state.map((item)=>{
-                            return (
-                                <Picker.Item
-                                    label={item.state_name.toString()}
-                                    value={item._id}
-                                    key={item._id}
-                                />
-                            )
-                        })}
+                                </Picker>
+                            </View>
+                            
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Name:</Text>
+                            
+                            <View style={styles.dropinput}>
+                                <Picker
+                                    style={styles.input}
+                                    enabled={true}
+                                    mode="dropdown"
+                                    prompt="Select Customer Title"
+                                    onValueChange={(itemValue)=>{
+                                        props.setFieldValue('customer_title', itemValue);
+                                        setCustomerTitle(itemValue)}}
+                                    selectedValue={props.values.customer_title}
+                                >
+                                <Picker.Item label="M/s" value="M/s"/>
+                                <Picker.Item label="Mr" value="Mr"/>
+                                <Picker.Item label="Ms" value="Ms"/>
 
-                        
-                    </Picker>
-                    <Picker
-                        enabled={true}
-                        mode="dropdown"
-                        placeholder="Select Area"
-                        onValueChange={props.handleChange('area_id')}
-                        selectedValue={props.values.area_id}
-                    >
-                        {area.map((item)=>{
-                            return (
-                                <Picker.Item
-                                    label={item.area_name.toString()}
-                                    value={item._id}
-                                    key={item._id}
-                                />
-                            )
-                        })}
+                                </Picker>
+                            </View>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder="customer Name"
+                                    onChangeText={props.handleChange('name')}
+                                    value={props.values.name}
+                                    onBlur={props.handleBlur('name')}
+                                    />
+                                    {props.touched.name && props.errors.name && 
+                                    <Text style={styles.errorText}>{ props.errors.name}</Text>
+                                    }
+                            
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Mobile Number:</Text>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder="Mobile"
+                                    onChangeText={props.handleChange('customer_mobile')}
+                                    keyboardType="numeric"
+                                    value={props.values.customer_mobile}
+                                    />
+                                    {props.touched.customer_mobile && props.errors.customer_mobile && 
+                                    <Text style={styles.errorText}>{ props.errors.customer_mobile}</Text>
+                                    }
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Whatsapp Number:</Text>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder="Whatsapp Number"
+                                    onChangeText={props.handleChange('whatsapp_no')}
+                                    keyboardType="numeric"
+                                    value={props.values.whatsapp_no}
+                                    />
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Email:</Text>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder="Email"
+                                    onChangeText={props.handleChange('customer_email')}
+                                    value={props.values.customer_email}
+                                    />
+                                    {props.touched.customer_email && props.errors.customer_email && 
+                                    <Text style={styles.errorText}>{ props.errors.customer_email}</Text>
+                                    }
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Address:</Text>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder="Address"
+                                    onChangeText={props.handleChange('address')}
+                                    value={props.values.address}
+                                    />
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Country:</Text>
+                            <View style={styles.dropinput}>
+                                <Picker
+                                    style={styles.input}
+                                    enabled={true}
+                                    mode="dropdown"
+                                    placeholder="Select Country"
+                                    onValueChange={props.handleChange('country_id')}
+                                    selectedValue={props.values.country_id}
+                                >
+                                    <Picker.Item label="Select Country" value="" />
+                                    {country.map((item)=>{
+                                        return (
+                                            
+                                            <Picker.Item
+                                                label={item.country_name.toString()}
+                                                value={item._id}
+                                                key={item._id}
+                                            />
+                                        )
+                                    })}
 
-                        
-                    </Picker>
-                    <Picker
-                        enabled={true}
-                        mode="dropdown"
-                        placeholder="Select Country"
-                        onValueChange={props.handleChange('country_id')}
-                        selectedValue={props.values.country_id}
-                    >
-                        {country.map((item)=>{
-                            return (
-                                <Picker.Item
-                                    label={item.country_name.toString()}
-                                    value={item._id}
-                                    key={item._id}
-                                />
-                            )
-                        })}
+                                    
+                                </Picker>
+                            </View>
+                            
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>State:</Text>
+                            <View style={styles.dropinput}>
+                                <Picker
+                                    style={styles.input}
+                                    enabled={true}
+                                    mode="dropdown"
+                                    placeholder="Select State"
+                                    onValueChange={props.handleChange('state_id')}
+                                    selectedValue={props.values.state_id}
+                                >
+                                <Picker.Item label="Select State" value="" />
+                                {state.map((item)=>{
+                                    return (
+                                        <Picker.Item
+                                            label={item.state_name.toString()}
+                                            value={item._id}
+                                            key={item._id}
+                                        />
+                                    )
+                                })}
 
-                        
-                    </Picker>
-                    <Picker
-                        enabled={true}
-                        mode="dropdown"
-                        placeholder="Select Currency"
-                        onValueChange={props.handleChange('currency_id')}
-                        selectedValue={props.values.currency_id}
-                    >
-                        {currency.map((item)=>{
-                            return (
-                                <Picker.Item
-                                    label={item.currency_name.toString()}
-                                    value={item._id}
-                                    key={item._id}
-                                />
-                            )
-                        })}
+                                
+                                </Picker>
+                            </View>
+                            
+                            
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Area:</Text>
+                            <View style={styles.dropinput}>
+                                <Picker
+                                    style={styles.input}
+                                    enabled={true}
+                                    mode="dropdown"
+                                    placeholder="Select Area"
+                                    onValueChange={props.handleChange('area_id')}
+                                    selectedValue={props.values.area_id}
+                                >
+                                    <Picker.Item label="Select Area" value="" />
+                                    {area.map((item)=>{
+                                        return (
+                                            <Picker.Item
+                                                label={item.area_name.toString()}
+                                                value={item._id}
+                                                key={item._id}
+                                            />
+                                        )
+                                    })}
 
-                        
-                    </Picker>
+                                    
+                                </Picker>
+                            </View>
+                            
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>TRN:</Text>
+                            <TextInput
+                                    style={styles.input}
+                                    placeholder="TRN"
+                                    onChangeText={props.handleChange('trn_no')}
+                                    keyboardType="numeric"
+                                    value={props.values.trn_no}
+                                    />
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Language:</Text>
+                            <View style={styles.dropinput}>
+                                <Picker
+                                    
+                                    enabled={true}
+                                    mode="dropdown"
+                                    placeholder="Select language"
+                                    onValueChange={props.handleChange('language_id')}
+                                    selectedValue={props.values.language_id}
+                                >
+                                    <Picker.Item label="Select Language" value="" />
+                                    {language.map((item)=>{
+                                        return (
+                                            <Picker.Item
+                                                label={item.language_name.toString()}
+                                                value={item._id}
+                                                key={item._id}
+                                            />
+                                        )
+                                    })}
 
-                    <Picker
-                        enabled={true}
-                        mode="dropdown"
-                        placeholder="Select Customer Type"
-                        onValueChange={(itemValue)=>{
-                            props.setFieldValue('customer_type', itemValue);
-                            setCustomerType(itemValue)}}
-                        selectedValue={props.values.customer_type}
-                    >
-                        <Picker.Item label="B2B" value="b2b"/>
-                        <Picker.Item label="B2C" value="b2c"/>
+                                    
+                                </Picker>
+                            </View>
+                            
+                        </View>
+                        <View>
+                            <Text style={styles.headingtext}>Currency:</Text>
+                            <View style={styles.dropinput}>
+                                <Picker
+                                    
+                                    enabled={true}
+                                    mode="dropdown"
+                                    placeholder="Select Currency"
+                                    onValueChange={props.handleChange('currency_id')}
+                                    selectedValue={props.values.currency_id}
+                                >
+                                    <Picker.Item label="Select Currency" value="" />
+                                    {currency.map((item)=>{
+                                        return (
+                                            <Picker.Item
+                                                label={item.currency_name.toString()}
+                                                value={item._id}
+                                                key={item._id}
+                                            />
+                                        )
+                                    })}
 
-                    </Picker>
-                    <Picker
-                        enabled={true}
-                        mode="dropdown"
-                        placeholder="Select Customer Title"
-                        onValueChange={(itemValue)=>{
-                            props.setFieldValue('customer_title', itemValue);
-                            setCustomerTitle(itemValue)}}
-                        selectedValue={props.values.customer_title}
-                    >
-                        <Picker.Item label="M/s" value="M/s"/>
-                        <Picker.Item label="Mr" value="Mr"/>
-                        <Picker.Item label="Ms" value="Ms"/>
+                                    
+                                </Picker>
+                            </View>
+                            
 
-                    </Picker>
+                        </View>
+                        <TouchableOpacity style={styles.button} onPress={props.handleSubmit}>
+                            <Text style={styles.buttonText}>Submit</Text>
+                        </TouchableOpacity>
+                    </View>
+                    
+                
+            )}
+                
+            </Formik>
 
-                </View>
-                <Button title="Submit" mode="contain" onPress={props.handleSubmit}/>
-            </View>
-        )}
-            
-        </Formik>
+        </ScrollView>
     
     );
 
@@ -269,17 +387,65 @@ export default function Addcontact(){
 
 const styles=StyleSheet.create({
 
+    container: {
+        flexGrow: 1,
+        paddingVertical: 20,
+        paddingHorizontal: 10,
+    },
+
     form:{
         marginVertical:20,
+        
     },
 
     input:{
-        borderWidth:1,
-        borderColor:"#ddd",
-        padding: 10,
+        borderWidth:0.5,
+        borderColor:"black",
+        paddingHorizontal: 10,
+        paddingVertical:7,
         fontSize:18,
         borderRadius:6,
+        maxWidth:350,
+        marginHorizontal:10,
     },
+    errorText: {
+        fontSize: 12,
+        color: 'red',
+        marginTop: 5,
+    },
+
+    headingtext:{
+        color: '#ffa600',
+        margin:7,
+        fontWeight:'600',
+        fontSize:16,
+    },
+
+    button: {
+        maxWidth: 350,
+        backgroundColor: '#ffa600',
+        borderRadius: 6,
+        paddingVertical: 7,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 10,
+        marginHorizontal:20,
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+
+    dropinput:{
+        borderWidth:0.5,
+        borderColor:"black",
+        fontSize:18,
+        borderRadius:6,
+        maxWidth:350,
+        marginHorizontal:10,
+    },
+
 
 
 });
