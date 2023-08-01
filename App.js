@@ -15,6 +15,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import Addcontact from "./src/components/screens/addcontacts";
 import OptionScreen from "./src/components/screens/OptionScreen";
 import ContactDetails from "./src/components/screens/ContactDetails";
+import ProductDetails from "./src/components/screens/ProductDetails";
 
 
 const Stack = createNativeStackNavigator();
@@ -47,7 +48,7 @@ const App = () => {
           <Stack.Screen name="addcontacts" component={Addcontact} options={{ headerStyle: { backgroundColor: '#ffa600', }, headerTintColor: "white", title: "Add Contacts" }} />
           <Stack.Screen name="OptionScreen" component={OptionScreen} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, headerTintColor: "white", title: "Options" }} />
           <Stack.Screen name="ProductScreen" component={ProductScreen} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, title: "Products" }} />
-
+          <Stack.Screen name="ProductDetails" component={ProductDetails} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, title: "Products" }}  />
         </Stack.Navigator>
       </View>
 

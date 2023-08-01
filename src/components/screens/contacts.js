@@ -35,7 +35,7 @@ export default function Contacts({ navigation }) {
 
     useEffect(() => {
         
-        if (searchQuery) {
+        if (searchQuery !== "") {
         axios.get(searchurl + searchQuery)
             .then((res) => {
             const filteredResults = res.data.data.map((item) => ({
