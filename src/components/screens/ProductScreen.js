@@ -13,7 +13,7 @@ const CustomButton = ({ title, onPress }) => {
         <TouchableWithoutFeedback onPress={onPress}>
             <View style={styles.buttonContainer}>
                 <View style={styles.buttonContent}>
-                    <AntDesign name="left" size={20} color="black" style={styles.icon} />
+                    <AntDesign name="left" size={20} color="black"  />
                     <Text style={styles.buttonText}>{title}</Text>
                 </View>
             </View>
@@ -64,6 +64,9 @@ const ProductScreen = () => {
         }
     }, [searchQuery, productNames]);
 
+
+    //on chaging search test
+
     const onChangeSearch = (query) => {
         setSearchQuery(query);
     };
@@ -113,12 +116,10 @@ const styles = StyleSheet.create({
         marginBottom: 12,
         alignItems: "center"
     },
-    icon: {
-        fontSize: 18,
-    },
+    
     buttonText: {
         marginLeft: 34,
-        fontSize: 18,
+        fontSize: 17,
         color: "white"
     },
     searchContainer: {
