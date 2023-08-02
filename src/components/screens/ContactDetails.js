@@ -56,9 +56,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   addButtonContainer: {
-    alignItems: "flex-start",
+    alignItems: "flex-end",
     padding: 20,
-    marginVertical: 150
+    marginVertical: 50
   },
   addbutton: {
     padding: 10,
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   iconRow: {
-    marginLeft: 250
+    marginLeft: 200
   }
 });
