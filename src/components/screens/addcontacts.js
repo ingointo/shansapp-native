@@ -39,6 +39,8 @@ export default function Addcontact(){
     const[currency,setCurrency]=useState([]);
     const[customerTitle,setCustomerTitle]=useState("");
     const[formsubmitted,setFormSubmitted]=useState(false)
+    
+
 
     useEffect(()=>{
         axios.get(languageUrl).then((res)=>{
@@ -54,6 +56,7 @@ export default function Addcontact(){
             const stateArray=res.data.data.map((item)=>({
                 state_name:item.state_name,
                 _id:item._id,
+                country_id:item.country_id
                 
             }));
             setState(stateArray);
@@ -63,6 +66,7 @@ export default function Addcontact(){
             const areaArray=res.data.data.map((item)=>({
                 area_name:item.area_name,
                 _id:item._id,
+                state_id:item.state.state_id
                 
             }));
             setArea(areaArray);
@@ -89,7 +93,7 @@ export default function Addcontact(){
 
     
 
-    // console.log(country);
+
     
     return(
         <ScrollView style={styles.container}>
@@ -147,9 +151,9 @@ export default function Addcontact(){
                         <View>
                             <Text style={styles.headingtext}>Name:</Text>
                             
-                            <View style={styles.dropinput}>
+                            <View style={styles.customer_title}>
                                 <Picker
-                                    style={styles.input}
+                                    style={styles.title_input}
                                     enabled={true}
                                     mode="dropdown"
                                     prompt="Select Customer Title"
@@ -261,14 +265,19 @@ export default function Addcontact(){
                                 >
                                 <Picker.Item label="Select State" value="" />
                                 {state.map((item)=>{
-                                    return (
-                                        <Picker.Item
-                                            label={item.state_name.toString()}
-                                            value={item._id}
-                                            key={item._id}
-                                        />
+                                    if(item.country_id===props.values.country_id){
+                                        return (
+                                            <Picker.Item
+                                                label={item.state_name.toString()}
+                                                value={item._id}
+                                                key={item._id}
+                                            />
+                                        )
+                                    }
+                                    }
+                                    
                                     )
-                                })}
+                                }
 
                                 
                                 </Picker>
@@ -289,13 +298,14 @@ export default function Addcontact(){
                                 >
                                     <Picker.Item label="Select Area" value="" />
                                     {area.map((item)=>{
+                                        if(item.state_id===props.values.state_id){
                                         return (
                                             <Picker.Item
                                                 label={item.area_name.toString()}
                                                 value={item._id}
                                                 key={item._id}
                                             />
-                                        )
+                                        )}
                                     })}
 
                                     
@@ -445,6 +455,22 @@ const styles=StyleSheet.create({
         maxWidth:350,
         marginHorizontal:10,
     },
+    customer_title:{
+        borderWidth:0.5,
+        borderColor:"black",
+        borderRadius:6,
+        maxWidth:150,
+        marginLeft:10,
+        overflow:'hidden',
+        
+    },
+
+    title_input:{
+        marginHorizontal:20,
+        
+    },
+
+
 
 
 
