@@ -1,24 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableWithoutFeedback, StyleSheet, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { baseUrl } from "../../api/const";
 
+const productDetailsUrl = `${baseUrl}/viewProducts/`;
+
+
+//Custom button navigation
 const CustomButton = ({ title, onPress }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.buttonContainer}>
         <View style={styles.button}>
-          <AntDesign name="left" size={20} color="black" />
+          <AntDesign name="left" size={14} color="black" />
           <Text style={styles.title}>{title}</Text>
         </View>
-      </View>
     </TouchableWithoutFeedback>
   );
 };
 
-const ProductDetails = (props) => {
-  console.log("Product Details page ++++++++++++++++++++++++++++++++++")
-  console.log(props)
+//Custom Add button to add the product 
+const CustomAddButton = ({ title, onPress }) => {
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>     
+        <View style={styles.addbutton}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
+const ProductDetails = ({ route }) => {
+  const id = route.params.item._id;
+  const {item} =route.params
+
+  const [detail, setDetail] = useState([]); // Initialize detail state as null
+
+  useEffect(() => {
+    axios.get(productDetailsUrl + id).then((res) => {
+      const productItems = res.data.data[0]; // Assuming there's only one item in the array
+
+      if (productItems) {
+        const details = {
+          productName: productItems.product_name,
+          productCategory: productItems.category_name,
+          productQuantity: productItems.total_product_quantity,
+          totalProductQuantity: productItems.total_product_quantity,
+          productArea: productItems.area,
+          alternateProduct: productItems.alternate_products,
+          productCost: productItems.cost,
+          productCode: productItems.product_code
+        };
+        setDetail(details);
+      }
+    });
+  }, [id]);
+
+  console.log("details---------------", detail);
+
   const navigation = useNavigation();
 
   return (
@@ -32,23 +72,44 @@ const ProductDetails = (props) => {
               uri: 'https://www.techspot.com/images2/news/bigimage/2021/05/2021-05-18-image-27-j_1100.webp',
             }}
           />
-          <Text style={styles.productName}>Product name</Text>
-          <View style={styles.rowContainer}>
-            <Text>In Stock</Text>
-            <Text>Dynamic Price</Text>
+          <View style={styles.productInfoContainer}>
+            <Text style={styles.productName}>{detail.productName}</Text>
+            <View style={styles.rowContainer}>
+              <Text style={styles.rowText}>In Stock</Text>
+              <Text style={styles.infoText}>{detail.productCost} QAR</Text>
+            </View>
           </View>
         </View>
-        <View>
-          <Text>Product Code</Text>
-          <Text>Category</Text>
-          <Text>On Hand</Text>
-          <Text>Total Quantity</Text>
-          <Text>More Information</Text>
-          <Text>Product Location</Text>
-          <Text>Area</Text>
-          <Text>Alternate Products</Text>
+        <View style={styles.columnContainer}>
+          <Text style={styles.productDetails}>Product Code</Text>
+          <Text style={styles.columnText}>{detail.productCode}</Text>
+        </View>
+        <View style={styles.columnContainer}>
+          <Text style={styles.productDetails}>Category</Text>
+          <Text style={styles.columnText}>{detail.productCategory}</Text>
+        </View>
+        <View style={styles.columnContainer}>
+          <Text style={styles.productDetails}>On Hand</Text>
+          <Text style={styles.columnText}>{detail.productQuantity}</Text>
+        </View>
+        <View style={styles.columnContainer}>
+          <Text style={styles.productDetails}>Total Quantity</Text>
+          <Text style={styles.columnText}>{detail.totalProductQuantity}</Text>
+        </View>
+        <View style={styles.columnContainer}>
+          <Text style={styles.productDetails}>More Information</Text>
+          <Text style={styles.columnText}>{detail.totalProductQuantity}</Text>
+        </View>
+        <View style={styles.columnContainer}>
+          <Text style={styles.productDetails}>Product Location</Text>
+          <Text style={styles.columnText}>{ }</Text>
+        </View>
+        <View style={styles.columnContainer}>
+          <Text style={styles.productDetails}>Area</Text>
+          <Text style={styles.columnText}>Area 1</Text>
         </View>
       </View>
+      <CustomAddButton title="Add Products"onPress={()=>navigation.navigate('Contactdetails',{item:item})}/>
     </View>
   );
 };
@@ -65,7 +126,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginLeft: 34,
-    fontSize: 17,
+    fontSize: 15,
     color: "white"
   },
   tinyLogo: {
@@ -76,18 +137,54 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginTop: 10
   },
-  imgNameContainer:{
-    flexDirection: "row",
-    justifyContent: "space-around",
+  imgNameContainer: {
+    flexDirection: "row"
+  },
+  productInfoContainer: {
+    marginLeft: 15,
   },
   productName: {
-    marginLeft: 15,
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 14,
   },
   rowContainer: {
-    flexDirection: "row-reverse"
+    flexDirection: "column",
+    justifyContent: "space-between",
+    marginTop: 8,
+  },
+  infoText: {
+    marginTop: 5,
+    fontSize: 14,
+    color: "#797979"
+  },
+  rowText: {
+    color: "#ffa600",
+    fontSize: 14,
+    fontWeight: "bold"
+  },
+  productDetails: {
+    color: "#797979",
+    marginTop: 10
+  },
+  columnText: {
+    color: "black",
+    marginTop: 10,
+    marginRight: 150,
+
+  },
+  columnContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  addbutton: {
+    marginHorizontal: 25,
+    marginTop: 295,
+    padding: 10,
+    alignItems: "center",
+    backgroundColor: "#ffa600",
+    borderRadius: 13
   }
+
 });
 
 export default ProductDetails;

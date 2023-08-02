@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 
 const ProductList = ({ item }) => {
-    console.log('Product List ')
+    console.log('Product List ++++++++++++ ')
 
     console.log(item)
 
@@ -11,7 +11,7 @@ const ProductList = ({ item }) => {
     const { productName, productCost } = item
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item })}>
+        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item})}>
             <View style={[styles.box]} >
                 <Image
                     style={styles.tinyLogo}
