@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import * as Yup from 'yup';
 import { useNavigation } from "@react-navigation/native";
+import * as DocumentPicker from 'expo-document-picker';
+
 
 export const AddSchema= Yup.object().shape({
     name:Yup.string().required('Please enter your Name'),
@@ -28,6 +30,7 @@ export default function Addcontact(){
     const areaUrl='http://137.184.67.138:3004/viewArea/area_list/drop_down';
     const countryUrl='http://137.184.67.138:3004/viewCountry/country_list/country_dropdown';
     const currencyUrl='http://137.184.67.138:3004/viewCurrency/currency_list/currency_dropdown';
+    const imageUrl='http://137.184.67.138:3004/fileUpload';
     const navigation=useNavigation();
 
 
@@ -39,6 +42,15 @@ export default function Addcontact(){
     const[currency,setCurrency]=useState([]);
     const[customerTitle,setCustomerTitle]=useState("");
     const[formsubmitted,setFormSubmitted]=useState(false)
+    const[fileupload,setFileupload]=useState('');
+    const[selectedfiles,setSelectedFiles]=useState('');
+
+    // _pickDocument = async () => {
+    //     let result = await DocumentPicker.getDocumentAsync({});
+    //     alert(result.uri);
+    //     console.log(result);
+    //     return result;
+	// }
     
 
 
@@ -100,15 +112,17 @@ export default function Addcontact(){
                 <Formik
             initialValues={{name:'',customer_mobile:'',customer_email:'',whatsapp_no:'',
             language_id:'',country_id:'',state_id:'',currency_id:'',area_id:'',address:'',
-            customer_title:'',trn_no:'',image_url:'',customer_type:''
+            customer_title:'',trn_no:'',image_url:'',customer_type:'',file_upload:''
         }}
         validationSchema={AddSchema}
         onSubmit={(values,{seFromtSubmitted})=>{
-            console.log(values)
+            
             setFormSubmitted(true);
+            // axios.post(imageUrl,result).then((res)=>setFieldValue('file_upload', res.data))
             axios.post(contactUrl,values).then(
                 (res)=>{
                     Alert.alert("Contact Successfully added")
+                    console.log(values)
                     setFormSubmitted(false)
                     navigation.navigate('Contactsviewnav');
                     
@@ -127,6 +141,18 @@ export default function Addcontact(){
             {(props)=>(
                 
                     <View style={styles.form}>
+                        {/* <View>
+                            <Text style={styles.headingtext}>Upload Image</Text>
+                            <TouchableOpacity style={styles.button} onPress={async () => {
+                                result = await DocumentPicker.getDocumentAsync({});
+                                props.setFieldValue('file_upload',result);
+                                alert(result.uri);
+                                console.log(result);
+                                return result;}}>
+                                <Text style={styles.buttonText}>Submit</Text>
+                            </TouchableOpacity>
+                            
+                        </View> */}
                         <View>
                             <Text style={styles.headingtext}>Customer Type:</Text>
                             <View style={styles.dropinput}>
