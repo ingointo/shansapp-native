@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import axios from "axios";
 import * as Yup from 'yup';
 import { useNavigation } from "@react-navigation/native";
-import * as DocumentPicker from 'expo-document-picker';
 
 
 export const AddSchema= Yup.object().shape({
@@ -42,15 +41,9 @@ export default function Addcontact(){
     const[currency,setCurrency]=useState([]);
     const[customerTitle,setCustomerTitle]=useState("");
     const[formsubmitted,setFormSubmitted]=useState(false)
-    const[fileupload,setFileupload]=useState('');
-    const[selectedfiles,setSelectedFiles]=useState('');
 
-    // _pickDocument = async () => {
-    //     let result = await DocumentPicker.getDocumentAsync({});
-    //     alert(result.uri);
-    //     console.log(result);
-    //     return result;
-	// }
+
+    
     
 
 
@@ -112,7 +105,7 @@ export default function Addcontact(){
                 <Formik
             initialValues={{name:'',customer_mobile:'',customer_email:'',whatsapp_no:'',
             language_id:'',country_id:'',state_id:'',currency_id:'',area_id:'',address:'',
-            customer_title:'',trn_no:'',image_url:'',customer_type:'',file_upload:''
+            customer_title:'',trn_no:'',image_url:'',customer_type:''
         }}
         validationSchema={AddSchema}
         onSubmit={(values,{seFromtSubmitted})=>{
@@ -141,18 +134,6 @@ export default function Addcontact(){
             {(props)=>(
                 
                     <View style={styles.form}>
-                        {/* <View>
-                            <Text style={styles.headingtext}>Upload Image</Text>
-                            <TouchableOpacity style={styles.button} onPress={async () => {
-                                result = await DocumentPicker.getDocumentAsync({});
-                                props.setFieldValue('file_upload',result);
-                                alert(result.uri);
-                                console.log(result);
-                                return result;}}>
-                                <Text style={styles.buttonText}>Submit</Text>
-                            </TouchableOpacity>
-                            
-                        </View> */}
                         <View>
                             <Text style={styles.headingtext}>Customer Type:</Text>
                             <View style={styles.dropinput}>
@@ -292,6 +273,7 @@ export default function Addcontact(){
                                 <Picker.Item label="Select State" value="" />
                                 {state.map((item)=>{
                                     if(item.country_id===props.values.country_id){
+                                        console.log('State:', item.state_name, 'ID:', item._id);
                                         return (
                                             <Picker.Item
                                                 label={item.state_name.toString()}
@@ -324,14 +306,16 @@ export default function Addcontact(){
                                 >
                                     <Picker.Item label="Select Area" value="" />
                                     {area.map((item)=>{
+                                        console.log('Area:', item.state_id, 'ID:', item._id);
                                         if(item.state_id===props.values.state_id){
+                                                console.log("77777777777777777777777777",props.values.state_id)
                                         return (
                                             <Picker.Item
                                                 label={item.area_name.toString()}
                                                 value={item._id}
                                                 key={item._id}
                                             />
-                                        )}
+                                        )} console.log("Areacode",props.values.area_id)
                                     })}
 
                                     
@@ -368,6 +352,7 @@ export default function Addcontact(){
                                                 value={item._id}
                                                 key={item._id}
                                             />
+                                        
                                         )
                                     })}
 
