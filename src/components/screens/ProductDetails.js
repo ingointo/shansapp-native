@@ -8,8 +8,10 @@ import { baseUrl } from "../../api/const";
 const productDetailsUrl = `${baseUrl}/viewProducts/`;
 
 
+
+
 //Custom button navigation
-const CustomButton = ({ title, onPress }) => {
+const CustomButton = ({ title, onPress,  }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
         <View style={styles.button}>
@@ -31,9 +33,13 @@ const CustomAddButton = ({ title, onPress }) => {
   );
 };
 
+
+
 const ProductDetails = ({ route }) => {
   const id = route.params.item._id;
   const {item} =route.params
+
+  const {contact}=route.params
 
   const [detail, setDetail] = useState([]); // Initialize detail state as null
 
@@ -43,6 +49,7 @@ const ProductDetails = ({ route }) => {
 
       if (productItems) {
         const details = {
+          productID:productItems._id,
           productName: productItems.product_name,
           productCategory: productItems.category_name,
           productQuantity: productItems.total_product_quantity,
@@ -57,9 +64,13 @@ const ProductDetails = ({ route }) => {
     });
   }, [id]);
 
-  console.log("details---------------", detail);
+  console.log("casfasf",contact)
 
   const navigation = useNavigation();
+
+  // const handleAddContact = () => {
+  //   navigation.navigate("ContactDetailScreen", { contact_id: contact_id });
+  // };
 
   return (
     <View style={styles.container}>
@@ -109,7 +120,7 @@ const ProductDetails = ({ route }) => {
           <Text style={styles.columnText}>Area 1</Text>
         </View>
       </View>
-      <CustomAddButton title="Add Products"onPress={()=>navigation.navigate('Contactdetails',{item:item})}/>
+      <CustomAddButton title="Add Products"onPress={()=>navigation.navigate('Contactdetails',{ item: contact ,product:detail})}/>
     </View>
   );
 };

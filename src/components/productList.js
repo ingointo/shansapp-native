@@ -2,16 +2,17 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 
-const ProductList = ({ item }) => {
+const ProductList = ({ item ,contact}) => {
     console.log('Product List ++++++++++++ ')
 
-    console.log(item)
+
+    console.log("contact Iist",contact)
 
     const navigation = useNavigation();
     const { productName, productCost } = item
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item})}>
+        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item, contact:contact})}>
             <View style={[styles.box]} >
                 <Image
                     style={styles.tinyLogo}

@@ -24,7 +24,10 @@ const CustomButton = ({ title, onPress }) => {
 const productUrl = `${baseUrl}/viewProducts`;
 const searchUrl = `${baseUrl}/viewProducts?product_name=`;
 
-const ProductScreen = () => {
+const ProductScreen = ({route}) => {
+    const{ contact }=route.params;
+    
+
     const numColumns = 2;
     const navigation = useNavigation();
 
@@ -32,6 +35,8 @@ const ProductScreen = () => {
     const [productNames, setProductNames] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredProducts, setFilteredProducts] = useState([]);
+
+    console.log("passed items",contact);
 
     useEffect(() => {
         axios.get(productUrl)
@@ -89,7 +94,7 @@ const ProductScreen = () => {
                 <FlatList
                     data={filteredProducts}
                     keyExtractor={(item) => item._id} 
-                    renderItem={({ item }) => <ProductList item={item} />}
+                    renderItem={({ item }) => <ProductList item={item} contact={contact} />}
                     numColumns={numColumns}
                 />
             </View>

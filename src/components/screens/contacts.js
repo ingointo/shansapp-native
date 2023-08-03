@@ -26,6 +26,8 @@ export default function Contacts({ navigation }) {
             name: item.name,
             customer_mobile: item.customer_mobile,
             _id: item._id,
+            warehouse_id: item.warehouse_id,
+            warehouse_name:item.warehouse_name,
             }));
             setNames(namesArray);
             setFilteredNames(namesArray);
@@ -43,6 +45,7 @@ export default function Contacts({ navigation }) {
                 name: item.name,
                 customer_mobile: item.customer_mobile,
                 _id: item._id,
+                
             }));
             setFilteredNames(filteredResults);
             })
