@@ -21,13 +21,13 @@ const CustomButton = ({ title, onPress }) => {
     );
 };
 
+const productUrl = `${baseUrl}/viewProducts`;
 const searchUrl = `${baseUrl}/viewProducts?product_name=`;
 
 const ProductScreen = () => {
     const numColumns = 2;
     const navigation = useNavigation();
 
-    const productUrl = `${baseUrl}/viewProducts`;
 
     const [productNames, setProductNames] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -51,6 +51,7 @@ const ProductScreen = () => {
         if (searchQuery !== "") { 
             axios.get(searchUrl + searchQuery)
                 .then((res) => {
+                    console.log(res)
                     const filteredSearchResults = res.data.data.map((item) => ({
                         _id: item._id, 
                         productName: item.product_name,

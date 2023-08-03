@@ -1,14 +1,37 @@
-import React from "react"
-import { View, StyleSheet, Text, Image, StatusBar } from "react-native";
+import React, {useState, useEffect} from "react"
+import { View, StyleSheet, Text, Image, StatusBar, FlatList } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 import { FAB } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import CustomButton from "../custombutton";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { baseUrl } from "../../api/const";
+import HomeProductList from "./HomeProductList";
 
+
+const productUrl = `${baseUrl}/viewProducts`;
 
 export default function Home() {
+    const numColumns = 2
+
+    const [filteredProducts, setFilteredProducts] = useState([]);
+
+    useEffect(() => {
+        axios.get(productUrl)
+            .then((res) => {
+                const productNamesArr = res.data.data.map((item) => ({
+                    _id: item._id, // Add missing _id property
+                    productName: item.product_name,
+                    productCost: item.cost
+                }));
+               
+                setFilteredProducts(productNamesArr);
+            })
+            .catch(err => console.log(err));
+    }, []);
+
 
     const navigation=useNavigation();
 
@@ -51,6 +74,16 @@ export default function Home() {
                 <CustomButton title="Contacts" color="#3c7dff" onPress={() => navigation.navigate('Contactsviewnav')} />
             </View>
         </View>
+            <View>
+            <View style={styles.productListContainer}>
+                <FlatList
+                    data={filteredProducts}
+                    keyExtractor={(item) => item._id} 
+                    renderItem={({ item }) => <HomeProductList item={item} />}
+                    numColumns={numColumns}
+                />
+            </View>
+            </View>
 
         <FAB
             style={styles.fab}
