@@ -273,7 +273,7 @@ export default function Addcontact(){
                                 <Picker.Item label="Select State" value="" />
                                 {state.map((item)=>{
                                     if(item.country_id===props.values.country_id){
-                                        console.log('State:', item.state_name, 'ID:', item._id);
+                                        // console.log('State:', item.state_name, 'ID:', item._id);
                                         return (
                                             <Picker.Item
                                                 label={item.state_name.toString()}
@@ -308,14 +308,15 @@ export default function Addcontact(){
                                     {area.map((item)=>{
                                         console.log('Area:', item.state_id, 'ID:', item._id);
                                         if(item.state_id===props.values.state_id){
-                                                console.log("77777777777777777777777777",props.values.state_id)
+                                                // console.log("77777777777777777777777777",props.values.state_id)
                                         return (
                                             <Picker.Item
                                                 label={item.area_name.toString()}
                                                 value={item._id}
                                                 key={item._id}
                                             />
-                                        )} console.log("Areacode",props.values.area_id)
+                                        )} 
+                                        // console.log("Areacode",props.values.area_id)
                                     })}
 
                                     
