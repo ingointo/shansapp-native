@@ -59,9 +59,8 @@ export default function BottomDrawer() {
             <Tab.Screen name="Home" component={Home} options={{ headerShown: false, }} />
             <Tab.Screen name="Categories" component={CategoriesScreen} options={{ headerShown: false, }} />
             <Tab.Screen name="Dash" component={DashScreen} options={{ headerShown: false, }} />
-            <Tab.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false, }} />
-            <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false, }} />
-
+            <Tab.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false}} />
+            <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false, tabBarHideOnKeyboard: true}}/>
         </Tab.Navigator>
 
     );

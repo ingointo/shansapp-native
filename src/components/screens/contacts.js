@@ -21,8 +21,7 @@ export default function Contacts({ navigation }) {
     useEffect(() => {
         axios.get(contacturl)
         .then((res) => {
-            console.log("contacts details",res.data)
-            const namesArray = res.data.data[0].map((item) => ({
+            const namesArray = res.data.data.map((item) => ({
             name: item.name,
             customer_mobile: item.customer_mobile,
             _id: item._id,

@@ -4,7 +4,7 @@ import { Searchbar } from "react-native-paper";
 import axios from "axios";
 
 import { AntDesign } from "@expo/vector-icons"
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { baseUrl } from "../../api/const";
 import ProductList from "../productList";
 
@@ -21,16 +21,19 @@ const CustomButton = ({ title, onPress }) => {
     );
 };
 
-const productUrl = `${baseUrl}/viewProducts`;
 const searchUrl = `${baseUrl}/viewProducts?product_name=`;
 
-const ProductScreen = ({route}) => {
-    const{ contact }=route.params;
-    
+const ProductScreen = () => {
+    const route = useRoute()
+
+    const contact = route.params?.contact // without ? getting errors 
+    // const{ contact }=route.params;
+   
 
     const numColumns = 2;
     const navigation = useNavigation();
 
+    const productUrl = `${baseUrl}/viewProducts`;
 
     const [productNames, setProductNames] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -56,7 +59,6 @@ const ProductScreen = ({route}) => {
         if (searchQuery !== "") { 
             axios.get(searchUrl + searchQuery)
                 .then((res) => {
-                    console.log(res)
                     const filteredSearchResults = res.data.data.map((item) => ({
                         _id: item._id, 
                         productName: item.product_name,
@@ -79,28 +81,31 @@ const ProductScreen = ({route}) => {
 
     return (
         <View style={styles.container}>
+         
             <View>
-                <CustomButton title="Products" onPress={() => navigation.goBack()} />
+              <CustomButton title="Products" onPress={() => navigation.goBack()} />
             </View>
-            <View style={styles.searchContainer}>
-                <Searchbar
-                    placeholder="Search Products"
-                    value={searchQuery}
-                    onChangeText={onChangeSearch}
-                    style={styles.searchBox}
-                />
-            </View>
-            <View style={styles.productListContainer}>
-                <FlatList
-                    data={filteredProducts}
-                    keyExtractor={(item) => item._id} 
-                    renderItem={({ item }) => <ProductList item={item} contact={contact} />}
-                    numColumns={numColumns}
-                />
-            </View>
+     
+          <View style={styles.searchContainer}>
+            <Searchbar
+              placeholder="Search Products"
+              value={searchQuery}
+              onChangeText={onChangeSearch}
+              style={styles.searchBox}
+            />
+          </View>
+          <View style={styles.productListContainer}>
+            <FlatList
+              data={filteredProducts}
+              keyExtractor={(item) => item._id}
+              renderItem={({ item }) => <ProductList item={item} contact={contact} />}
+              numColumns={numColumns}
+            />
+          </View>
         </View>
-    );
-}
+      );
+    }
+
 
 const styles = StyleSheet.create({
     container: {

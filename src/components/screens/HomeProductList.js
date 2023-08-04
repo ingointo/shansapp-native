@@ -29,7 +29,7 @@ const HomeProductList = ({ item }) => {
 const styles = StyleSheet.create({
     box: {
         marginTop: 25,
-        marginLeft: 10,
+        marginHorizontal: 20,
         width: 130,
         height: 140,
         borderRadius: 25,

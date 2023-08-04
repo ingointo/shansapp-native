@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableWithoutFeedback, StyleSheet, Image } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { baseUrl } from "../../api/const";
 
@@ -11,13 +11,13 @@ const productDetailsUrl = `${baseUrl}/viewProducts/`;
 
 
 //Custom button navigation
-const CustomButton = ({ title, onPress,  }) => {
+const CustomButton = ({ title, onPress, }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-        <View style={styles.button}>
-          <AntDesign name="left" size={14} color="black" />
-          <Text style={styles.title}>{title}</Text>
-        </View>
+      <View style={styles.button}>
+        <AntDesign name="left" size={14} color="black" />
+        <Text style={styles.title}>{title}</Text>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
@@ -25,23 +25,24 @@ const CustomButton = ({ title, onPress,  }) => {
 //Custom Add button to add the product 
 const CustomAddButton = ({ title, onPress }) => {
   return (
-    <TouchableWithoutFeedback onPress={onPress}>     
-        <View style={styles.addbutton}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={styles.addbutton}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
     </TouchableWithoutFeedback>
   );
 };
 
 
 
-const ProductDetails = ({ route }) => {
+const ProductDetails = () => {
+  const route = useRoute()
   const id = route.params.item._id;
-  const {item} =route.params
+  // const {item} =route.params
 
-  const {contact}=route.params
+  const contact = route.params.contact
 
-  const [detail, setDetail] = useState([]); // Initialize detail state as null
+  const [detail, setDetail] = useState([]);
 
   useEffect(() => {
     axios.get(productDetailsUrl + id).then((res) => {
@@ -49,7 +50,7 @@ const ProductDetails = ({ route }) => {
 
       if (productItems) {
         const details = {
-          productID:productItems._id,
+          productID: productItems._id,
           productName: productItems.product_name,
           productCategory: productItems.category_name,
           productQuantity: productItems.total_product_quantity,
@@ -57,14 +58,13 @@ const ProductDetails = ({ route }) => {
           productArea: productItems.area,
           alternateProduct: productItems.alternate_products,
           productCost: productItems.cost,
-          productCode: productItems.product_code
+          productCode: productItems.product_code,
+          productDesc: productItems.product_description
         };
         setDetail(details);
       }
     });
   }, [id]);
-
-  console.log("casfasf",contact)
 
   const navigation = useNavigation();
 
@@ -109,7 +109,7 @@ const ProductDetails = ({ route }) => {
         </View>
         <View style={styles.columnContainer}>
           <Text style={styles.productDetails}>More Information</Text>
-          <Text style={styles.columnText}>{detail.totalProductQuantity}</Text>
+          <Text style={styles.columnText}>{detail.product_description}</Text>
         </View>
         <View style={styles.columnContainer}>
           <Text style={styles.productDetails}>Product Location</Text>
@@ -120,7 +120,14 @@ const ProductDetails = ({ route }) => {
           <Text style={styles.columnText}>Area 1</Text>
         </View>
       </View>
-      <CustomAddButton title="Add Products"onPress={()=>navigation.navigate('Contactdetails',{ item: contact ,product:detail})}/>
+
+      {/* navigate to the contact component have item(contacts, name, mobile number and others) */}
+      {contact ? (
+        <CustomAddButton title="Add Products" onPress={() => navigation.navigate('Contactdetails', { item: contact, product: detail })} />
+      ) : (
+        <CustomAddButton title="Add Products" onPress={() => navigation.navigate('Contactsviewnav')} />
+      )
+      }
     </View>
   );
 };

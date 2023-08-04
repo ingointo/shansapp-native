@@ -1,0 +1,3 @@
+changed contact details to item found or not because of fixing errrors
+
+changed syles option screen container

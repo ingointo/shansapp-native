@@ -69,7 +69,7 @@ const OptionScreen = () => {
                     <Text style={styles.textFam}>Product Purchase Requisition</Text>
                 </View>
             </View>
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                 <View style={[styles.boxDiffer, { backgroundColor: '#ebebeb' }]} >
                     <Image
                         source={require('../../../assets/optionsIcons/cashCollection.png')}
@@ -86,6 +86,7 @@ const OptionScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        marginHorizontal: 5
     },
     buttonContainer: {
         marginHorizontal: 20,
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5
     },
     boxDiffer: {
-        marginHorizontal: 15,
+        marginHorizontal: 25,
         width: 175,
         height: 140,
         borderRadius: 25,

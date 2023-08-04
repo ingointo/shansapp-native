@@ -1,7 +1,25 @@
-import React, { useState , useEffect } from "react";
-import { StyleSheet, View, Text, TouchableWithoutFeedback,TextInput,Button } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, TouchableWithoutFeedback, TextInput, Button } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from "axios";
+
+
+
+const QuantityChanger = ({ quantity, increaseQuantity, decreaseQuantity, setQuantity }) => {
+  return (
+    <View style={styles.quantityChanger}>
+      <Button title="+" onPress={increaseQuantity} />
+      <TextInput
+        style={styles.quantityInput}
+        value={quantity.toString()}
+        onChangeText={text => setQuantity(parseInt(text) || 0)}
+        placeholder="Enter quantity"
+        keyboardType="numeric"
+      />
+      <Button title="-" onPress={decreaseQuantity} />
+    </View>
+  );
+};
 
 
 const CustomAddButton = ({ title, onPress }) => {
@@ -15,18 +33,17 @@ const CustomAddButton = ({ title, onPress }) => {
   );
 };
 
-
-
-
 export default function ContactDetails({ route, navigation }) {
   const { item, product } = route.params;
+  console.log("Product prop:", product);
 
-  console.log("Product in contact detail ", product);
 
-  const[products,setProducts]=useState([]);
-  const [quantity, setQuantity] = useState(""); 
+
+  console.log(item, product)
+  const [products, setProducts] = useState([]);
+  const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState("");
-  const total=price*quantity
+  const total = price * quantity
 
   useEffect(() => {
     // On initial load, set the products from route params
@@ -36,11 +53,24 @@ export default function ContactDetails({ route, navigation }) {
   }, [product]);
 
   const handleAddToProducts = () => {
-    if (product && !products.some((prod) => prod.productName === product.productName)) {
-      const productWithDetails = { ...product, quantity: Number(quantity), price: Number(price) }; // Add quantity and price to the product object
+    if (product && quantity && price) { // Check if both quantity and price are provided
+      const productWithDetails = { ...product, quantity: Number(quantity), price: Number(price) };
       setProducts((prevProducts) => [...prevProducts, productWithDetails]);
-      setQuantity(""); // Clear the quantity input after adding the product
-      setPrice(""); 
+      setQuantity("");
+      setPrice("");
+    }
+  };
+  console.log("Products array:", products);
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+    setPrice(price + 1); 
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+      setPrice(price - 1);
     }
   };
 
@@ -54,16 +84,15 @@ export default function ContactDetails({ route, navigation }) {
     );
   };
   const handleRemoveFromProducts = (productNameToRemove) => {
-    // Use the setProducts function to update the state with a new array that excludes the product to be removed.
     setProducts((prevProducts) =>
       prevProducts.filter((prod) => prod.productName !== productNameToRemove)
     );
   };
-const date=new Date();
-  function  handlesubmit(){
-    axios.post('http://137.184.67.138:3004/createCombinedInvoicePaymentReceived',{
+  const date = new Date();
+  function handlesubmit() {
+    axios.post('http://137.184.67.138:3004/createCombinedInvoicePaymentReceived', {
 
-    
+
       "date": date,
       "amounts": 34567890,
       "invoice_status": "fully_paid",
@@ -96,21 +125,21 @@ const date=new Date();
       "tax_type_id": null,
       "total_discount_amount": 0,
       "crm_product_line_ids": [
-          {
-              "product_id": product._id,
-              "product_name": product.name,
-              "tax_type_id": "648d9b8fef9cd868dfbfa37f",
-              "tax_value": 0,
-              "uom": null,
-              "qty": quantity,
-              "unit_price": price,
-              "discount_percentage": 0,
-              "remarks": null,
-              "total": total,
-              "unit_cost": 100,
-              "total_cost": 100,
-              "return_quantity": 0
-          }
+        {
+          "product_id": product._id,
+          "product_name": product.name,
+          "tax_type_id": "648d9b8fef9cd868dfbfa37f",
+          "tax_value": 0,
+          "uom": null,
+          "qty": quantity,
+          "unit_price": price,
+          "discount_percentage": 0,
+          "remarks": null,
+          "total": total,
+          "unit_cost": 100,
+          "total_cost": 100,
+          "return_quantity": 0
+        }
       ],
       "image_url": [],
       "payment_date": "2023-08-03",
@@ -136,31 +165,33 @@ const date=new Date();
       "outstanding": 34567890,
       "credit_balance": -34467890,
       "Pdc_status": ""
-  
-    }).then(res=>{
+
+    }).then(res => {
       console.log(res);
       console.log("success");
-    }).catch(err=>console.log(err))
+    }).catch(err => console.log(err))
   }
-  
-  console.log("products list",products)
+
+  console.log("products list", products)
 
   return (
     <View style={styles.container}>
       <View style={styles.details}>
-        <View style={styles.rowContainer}>
+        {/* check item found or not  */}
+        {item ? (<View style={styles.rowContainer}>
           <Text style={styles.name}>{item.name}</Text>
           <Text style={styles.mobile}>{item.customer_mobile}</Text>
-        </View>
-
-        <View style={styles.iconRow}>
-          <MaterialIcons name="smartphone" size={35} color="black" />
-        </View>
+        </View>) : (
+          // If product is not found in the products list
+          <View style={styles.product}>
+            <Text>Item not found</Text>
+          </View>)}
+        <MaterialIcons name="smartphone" size={35} color="black" />
       </View>
       <View style={styles.addButtonContainer}>
         <CustomAddButton
           title="Add Products"
-          onPress={() => {navigation.navigate('ProductScreen', { contact: item });handleAddToProducts();}}
+          onPress={() => { navigation.navigate('ProductScreen', { contact: item }); handleAddToProducts(); }}
         />
       </View>
 
@@ -172,41 +203,37 @@ const date=new Date();
             <Text style={styles.productfields}>Availability:</Text>
             <Text style={styles.stock}>In Stock</Text>
           </View>
-          <View>
-            
-              <TextInput
-                style={styles.quantityInput}
-                value={quantity}
-                onChangeText={setQuantity}
-                placeholder="Enter quantity"
-                keyboardType="numeric"
-            />
-
-          </View>
-
-          <View>
-          <Text>Price:</Text>
+          <View style={styles.container}>
+            <Button title="+" onPress={increaseQuantity} />
             <TextInput
-              style={styles.priceInput}
-              value={price}
-              onChangeText={setPrice}
-              placeholder="Enter price"
+              style={styles.quantityInput}
+              value={quantity.toString()}
+              onChangeText={text => setQuantity(parseInt(text) || 0)}
+              placeholder="Enter quantity"
               keyboardType="numeric"
             />
+            <Button title="-" onPress={decreaseQuantity} />
+          </View>
+          <View>
+            <Text>Price:</Text>
+            <QuantityChanger
+              quantity={quantity}
+              increaseQuantity={increaseQuantity}
+              decreaseQuantity={decreaseQuantity}
+              setQuantity={setQuantity} // Add this line
+            />
 
           </View>
-
           <Text>Product category: {product.productCategory}</Text>
           <Text>On Hand: {product.productQuantity}</Text>
           <Text>Total Quantity: {product.totalProductQuantity}</Text>
-          <Text>Total price:{price*quantity}</Text>
+          <Text>Total price:{price * quantity}</Text>
           <RemoveButton productName={product.productName} />
-          <Button title="place order" onPress={handlesubmit}/>
+          <Button title="place order" onPress={handlesubmit} />
         </View>
       )}
-
-  </View>
-);
+    </View>
+  );
 }
 
 
@@ -216,7 +243,9 @@ const styles = StyleSheet.create({
   },
   details: {
     flexDirection: 'row',
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 15
   },
   name: {
     fontWeight: 'bold',
@@ -246,37 +275,34 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: "column"
   },
-  iconRow: {
-    marginLeft: 200
+  product: {
+    margin: 10,
   },
-  product:{
-    margin:10,
-  },
-  producttitle:{
-    fontSize:18,
-    alignSelf:'center',
+  producttitle: {
+    fontSize: 18,
+    alignSelf: 'center',
   },
 
-  productAvail:{
-    flexDirection:'row'
+  productAvail: {
+    flexDirection: 'row'
   },
 
-  stock:{
-    color:"#ffa600",
-    fontWeight:'bold',
-    fontSize:15,
+  stock: {
+    color: "#ffa600",
+    fontWeight: 'bold',
+    fontSize: 15,
   },
 
-  productfields:{
-    fontSize:15,
-    },
-
-  removeButtonText:{
-    color:'red',
-    fontWeight:'600',
-    fontSize:17,
+  productfields: {
+    fontSize: 15,
   },
 
-  
-  
+  removeButtonText: {
+    color: 'red',
+    fontWeight: '600',
+    fontSize: 17,
+  },
+
+
+
 });
