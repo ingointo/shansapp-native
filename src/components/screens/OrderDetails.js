@@ -26,7 +26,9 @@ const OrderDetails = () => {
 
     useEffect(() => {
         axios.get(invoiceUrl + id).then((res) => {
-            const invoiceDetails = res.data.data[0].map((item) => ({
+            console.log("+++++++++++++++++++++++++=----------------------==========", res.data.data[0])
+            setInvoice(res.data.data)
+            const invoiceDetails = res.data.data.map((item) => ({
                 id: item._id,
                 sequenceNum: item.sequence_no,
                 paymentDate: item.date,
@@ -38,12 +40,12 @@ const OrderDetails = () => {
                 customerName: item.customer_name,
                 warehouseName: item.warehouses_name
             }));
-            console.log("Order Details component ------------------", invoiceDetails);
+            console.log("Invoice details -----+++++++++++++++++++-----", invoiceDetails)
             setInvoice(invoiceDetails)
         });
     }, []);
 
-    console.log("Invoice details ----------", invoice)
+    console.log("Invoic details -----+++++++++++++++++++-----", invoice)
     const navigation = useNavigation();
     return (
         <>

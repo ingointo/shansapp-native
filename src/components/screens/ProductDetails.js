@@ -59,7 +59,8 @@ const ProductDetails = () => {
           alternateProduct: productItems.alternate_products,
           productCost: productItems.cost,
           productCode: productItems.product_code,
-          productDesc: productItems.product_description
+          productDesc: productItems.product_description, 
+          minSalePrice: productItems.sale_price
         };
         setDetail(details);
       }
@@ -109,7 +110,7 @@ const ProductDetails = () => {
         </View>
         <View style={styles.columnContainer}>
           <Text style={styles.productDetails}>More Information</Text>
-          <Text style={styles.columnText}>{detail.product_description}</Text>
+          <Text style={styles.columnText}>{detail.productDesc}</Text>
         </View>
         <View style={styles.columnContainer}>
           <Text style={styles.productDetails}>Product Location</Text>
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   columnText: {
     color: "black",
     marginTop: 10,
-    marginRight: 150,
+    marginRight: 50,
 
   },
   columnContainer: {

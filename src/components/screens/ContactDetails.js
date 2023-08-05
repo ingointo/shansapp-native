@@ -1,25 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableWithoutFeedback, TextInput, Button } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { StyleSheet, View, Text, TouchableWithoutFeedback, TouchableOpacity, TextInput, Button, ScrollView } from "react-native";
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 import axios from "axios";
-
-
-
-const QuantityChanger = ({ quantity, increaseQuantity, decreaseQuantity, setQuantity }) => {
-  return (
-    <View style={styles.quantityChanger}>
-      <Button title="+" onPress={increaseQuantity} />
-      <TextInput
-        style={styles.quantityInput}
-        value={quantity.toString()}
-        onChangeText={text => setQuantity(parseInt(text) || 0)}
-        placeholder="Enter quantity"
-        keyboardType="numeric"
-      />
-      <Button title="-" onPress={decreaseQuantity} />
-    </View>
-  );
-};
+import QuantityChanger from "../QuantityChanger/QuantityChanger";
 
 
 const CustomAddButton = ({ title, onPress }) => {
@@ -32,18 +15,32 @@ const CustomAddButton = ({ title, onPress }) => {
     </TouchableWithoutFeedback>
   );
 };
+const CustomSubmitButton = ({ title, onPress }) => {
+
+  return (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={styles.submitbutton}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+    </TouchableWithoutFeedback>
+  );
+};
+
 
 export default function ContactDetails({ route, navigation }) {
   const { item, product } = route.params;
   console.log("Product prop:", product);
 
-
+  if (product) {
+    const total = product.productCost
+  }
 
   console.log(item, product)
   const [products, setProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState("");
-  const total = price * quantity
+  const [price, setPrice] = useState(0);
+  const [productPrice, setProductPrice] = useState();
+
 
   useEffect(() => {
     // On initial load, set the products from route params
@@ -64,30 +61,15 @@ export default function ContactDetails({ route, navigation }) {
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
-    setPrice(price + 1); 
   };
 
   const decreaseQuantity = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
-      setPrice(price - 1);
     }
   };
 
-  const RemoveButton = ({ productName }) => {
-    return (
-      <TouchableWithoutFeedback onPress={() => handleRemoveFromProducts(productName)}>
-        <View style={styles.removeButton}>
-          <Text style={styles.removeButtonText}>Remove</Text>
-        </View>
-      </TouchableWithoutFeedback>
-    );
-  };
-  const handleRemoveFromProducts = (productNameToRemove) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((prod) => prod.productName !== productNameToRemove)
-    );
-  };
+
   const date = new Date();
   function handlesubmit() {
     axios.post('http://137.184.67.138:3004/createCombinedInvoicePaymentReceived', {
@@ -172,8 +154,22 @@ export default function ContactDetails({ route, navigation }) {
     }).catch(err => console.log(err))
   }
 
-  console.log("products list", products)
 
+  const RemoveButton = ({ productName }) => {
+    return (
+      <TouchableWithoutFeedback onPress={() => handleRemoveFromProducts(productName)}>
+        <View style={styles.removeButton}>
+          <Text style={styles.removeButtonText}>REMOVE</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  };
+  const handleRemoveFromProducts = (productNameToRemove) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((prod) => prod.productName !== productNameToRemove)
+    );
+  };
+// const total = product.productCost * quantity
   return (
     <View style={styles.container}>
       <View style={styles.details}>
@@ -190,47 +186,81 @@ export default function ContactDetails({ route, navigation }) {
       </View>
       <View style={styles.addButtonContainer}>
         <CustomAddButton
-          title="Add Products"
+          title="Add Products(s)"
           onPress={() => { navigation.navigate('ProductScreen', { contact: item }); handleAddToProducts(); }}
         />
       </View>
-
       {/* Check if product is available */}
       {product && products.some((prod) => prod.productName === product.productName) && (
-        <View style={styles.product}>
-          <Text style={styles.producttitle}>{product.productName}</Text>
-          <View style={styles.productAvail}>
-            <Text style={styles.productfields}>Availability:</Text>
-            <Text style={styles.stock}>In Stock</Text>
-          </View>
-          <View style={styles.container}>
-            <Button title="+" onPress={increaseQuantity} />
-            <TextInput
-              style={styles.quantityInput}
-              value={quantity.toString()}
-              onChangeText={text => setQuantity(parseInt(text) || 0)}
-              placeholder="Enter quantity"
-              keyboardType="numeric"
-            />
-            <Button title="-" onPress={decreaseQuantity} />
-          </View>
-          <View>
-            <Text>Price:</Text>
-            <QuantityChanger
-              quantity={quantity}
-              increaseQuantity={increaseQuantity}
-              decreaseQuantity={decreaseQuantity}
-              setQuantity={setQuantity} // Add this line
-            />
+        <ScrollView>
 
+          <View style={styles.product}>
+            <Text style={styles.productTitle}>{product.productName}</Text>
+            <View style={styles.productHeaderLabel}>
+              <Text style={styles.productHeaderLabel}>Availability:  </Text>
+              <Text style={styles.stockCheck}>In Stock</Text>
+            </View>
+            <View style={styles.columnContainer}>
+              <Text style={styles.productHeaderLabel}>Price:</Text>
+              <View style={styles.priceContainer}>
+               <TextInput>{product.productCost}</TextInput>
+              </View>
+              <Text style={styles.priceText}>AED</Text>
+            </View>
+            <View style={styles.removeContainer}>
+              <QuantityChanger
+                quantity={quantity}
+                increaseQuantity={increaseQuantity}
+                decreaseQuantity={decreaseQuantity}
+                setQuantity={setQuantity} // Add this line
+              />
+              <RemoveButton productName={product.productName} />
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={styles.productLabel}>Product Code:</Text>
+              <Text style={styles.productText}>{product.productCode}</Text>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={styles.productLabel}>Product category:</Text>
+              <Text style={styles.productText}>{product.productCategory}</Text>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={styles.productLabel}>On Hand:</Text>
+              <Text style={styles.productText}>{product.productQuantity}</Text>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={styles.productLabel}>Total Quantity:</Text>
+              <Text style={styles.productText}>{product.totalProductQuantity}</Text>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={styles.productLabel}>Min Sale Price:</Text>
+              <Text style={styles.productText}>{product.minSalePrice}</Text>
+            </View>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={styles.productLabel}>More Information:</Text>
+              <Text style={styles.productText}>{product.productDesc}</Text>
+            </View>
+
+            <View style={styles.bottomContainer}>
+              <View style={{flexDirection: "column"}}>
+
+              <Text style={styles.productLabel}>Total Quantity: {quantity}</Text>
+              <View style={{flexDirection: "row"}}>
+              <Text style={styles.productLabel}>Price ({quantity}) items  </Text>
+              <Text style={styles.productText}> {product.productCost * quantity} AED</Text>
+              </View>
+              </View>
+            <View style={styles.submitButtonContainer}>
+
+              <CustomSubmitButton
+                title="Place Order"
+                onPress={handlesubmit}
+              />
+            </View>
+            </View>
+            {/* <Button title="place order" onPress={handlesubmit} /> */}
           </View>
-          <Text>Product category: {product.productCategory}</Text>
-          <Text>On Hand: {product.productQuantity}</Text>
-          <Text>Total Quantity: {product.totalProductQuantity}</Text>
-          <Text>Total price:{price * quantity}</Text>
-          <RemoveButton productName={product.productName} />
-          <Button title="place order" onPress={handlesubmit} />
-        </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -259,13 +289,21 @@ const styles = StyleSheet.create({
   addButtonContainer: {
     alignItems: "flex-end",
     padding: 20,
-    marginVertical: 50
+    marginVertical: 30
   },
+  
   addbutton: {
     padding: 10,
     alignItems: "center",
     backgroundColor: "#ffa600",
     borderRadius: 13,
+  },
+  submitbutton: {
+    padding: 10,
+    alignItems: "center",
+    backgroundColor: "#ffa600",
+    borderRadius: 8,
+
   },
   title: {
     color: "white",
@@ -276,18 +314,25 @@ const styles = StyleSheet.create({
     flexDirection: "column"
   },
   product: {
-    margin: 10,
+    marginHorizontal: 25,
   },
-  producttitle: {
-    fontSize: 18,
-    alignSelf: 'center',
+  productTitle: {
+    fontSize: 15,
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    marginBottom: 5
+  },
+  productHeaderLabel: {
+    fontSize: 15,
+    flexDirection: "row",
+    fontWeight: "500"
   },
 
   productAvail: {
     flexDirection: 'row'
   },
 
-  stock: {
+  stockCheck: {
     color: "#ffa600",
     fontWeight: 'bold',
     fontSize: 15,
@@ -296,13 +341,46 @@ const styles = StyleSheet.create({
   productfields: {
     fontSize: 15,
   },
-
   removeButtonText: {
     color: 'red',
     fontWeight: '600',
     fontSize: 17,
   },
-
-
+  quantityInput: {
+    alignItems: "center"
+  },
+  removeContainer: {
+    flexDirection: 'row',
+    justifyContent: "space-between",
+  },
+  priceContainer: {
+    borderColor: "black",
+    borderWidth: 0.5,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 15,
+    width: 55,
+    borderRadius: 5,
+    flexDirection: "row"
+  },
+  columnContainer: {
+    flexDirection: "row",
+    marginBottom: 15,
+    marginTop: 15,
+  },
+  productLabel: {
+    fontSize: 16,
+    marginBottom: 5,
+    color: "black"
+  },
+  productText: {
+    marginRight: 30, 
+    fontWeight: "500"
+  },
+  bottomContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 50, 
+  }
 
 });
