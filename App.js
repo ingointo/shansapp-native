@@ -35,9 +35,9 @@ const App = () => {
 
         })}>
           <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false, }} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false, }}  />
           <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} />
-          <Stack.Screen name="Drawer" component={BottomDrawer} />
+          <Stack.Screen name="Drawer" component={BottomDrawer} options={{ headerShown: false, }}/>
           <Stack.Screen name="Homenav" component={Home} options={{ headerShown: false, }} />
           <Stack.Screen name="Contactsviewnav" component={Contacts} options={{ headerStyle: { backgroundColor: '#ffa600', }, headerTintColor: "white", title: "Contacts" }} />
           <Stack.Screen name="Contactdetails" component={ContactDetails} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerTintColor: "white", title: "Order Summery" }} />

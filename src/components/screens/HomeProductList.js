@@ -11,7 +11,8 @@ const HomeProductList = ({ item }) => {
     const { productName, productCost } = item
 
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item})}>
+
+        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item })}>
             <View style={[styles.box]} >
                 <Image
                     style={styles.tinyLogo}
@@ -19,31 +20,35 @@ const HomeProductList = ({ item }) => {
                         uri: 'https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_1280.jpg',
                     }}
                 />
+                <View style={styles.bottomContainer}>
+                    <Text style={styles.bottomText}>New Lowest Price</Text>
+                </View>
                 <Text style={styles.textFam}>{productName}</Text>
                 <Text style={styles.textPrice}>Price : {productCost} QAR</Text>
             </View>
         </TouchableOpacity>
+
     );
 }
 
 const styles = StyleSheet.create({
     box: {
         marginTop: 25,
-        marginHorizontal: 20,
-        width: 130,
+        marginHorizontal: 30,
+        width: 140,
         height: 140,
         borderRadius: 25,
         justifyContent: "center",
         alignItems: "center",
         borderWidth: 0.5,
-        borderColor:"#ffa600"
-       
+        borderColor: "#ffa600"
+
     },
     textFam: {
         fontFamily: "sans-serif",
         fontWeight: "bold",
         textAlign: "center",
-        marginTop: 10,
+        marginTop: 3,
         color: "black",
         fontSize: 15,
         letterSpacing: 0.3
@@ -54,6 +59,18 @@ const styles = StyleSheet.create({
     },
     textPrice: {
         color: "#808080"
+    },
+    bottomContainer: {
+        width: 125,
+        height: 20,
+        backgroundColor: "red",
+        borderRadius: 5,
+        color: "white",
+        alignItems: "center",
+        marginTop: 8 
+    },
+    bottomText: {
+        color: "white",
     }
 });
 

@@ -20,28 +20,36 @@ const CustomButton = ({ title, onPress }) => {
 
 const OrderDetails = () => {
 
-    const [ invoice, setInvoice]  = useState({})
+    const [invoice, setInvoice] = useState({})
     const route = useRoute(); // or use parathesis passing prop
-    const id = route.params.item.id;
+
+    const id = route.params.item.id
+    console.log(id)
 
     useEffect(() => {
         axios.get(invoiceUrl + id).then((res) => {
             console.log("+++++++++++++++++++++++++=----------------------==========", res.data.data[0])
-            setInvoice(res.data.data)
-            const invoiceDetails = res.data.data.map((item) => ({
-                id: item._id,
-                sequenceNum: item.sequence_no,
-                paymentDate: item.date,
-                invoiceStatus: item.invoice_status,
-                paidAmount: item.paid_amount,
-                productName: item.product_name,
-                date: item.date,
-                total: item.total_amount,
-                customerName: item.customer_name,
-                warehouseName: item.warehouses_name
-            }));
-            console.log("Invoice details -----+++++++++++++++++++-----", invoiceDetails)
-            setInvoice(invoiceDetails)
+            // setInvoice(res.data.data)
+            const invoiceDetails = res.data.data[0]
+            console.log("invoiceDetails-------------------", invoiceDetails)
+            if (invoiceDetails) {
+                const details = {
+                    id: invoiceDetails._id,
+                    sequenceNum: invoiceDetails.sequence_no,
+                    paymentDate: invoiceDetails.date,
+                    invoiceStatus: invoiceDetails.invoice_status,
+                    paidAmount: invoiceDetails.paid_amount,
+                    // productName: invoiceDetails.product_name,
+                    date: invoiceDetails.date,
+                    total: invoiceDetails.total_amount,
+                    customerName: invoiceDetails.customer.customer_name,
+                    // warehouseName: invoiceDetails.warehouses_name
+                }
+                setInvoice(details)
+                console.log("details", details)
+            }
+
+            // console.log("Invoice details -----+++++++++++++++++++-----", invoiceDetails)
         });
     }, []);
 
@@ -51,12 +59,12 @@ const OrderDetails = () => {
         <>
             <CustomButton title="Invoice Details" onPress={() => navigation.goBack()} />
             <View style={styles.content}>
-                <Text style={styles.sectionTitle}>Sequence Number</Text>
-                
-                <View style={styles.columnContainer}>
+                <Text style={styles.sectionTitle}>{invoice.sequenceNum}</Text>
+
+                {/* <View style={styles.columnContainer}>
                     <Text style={styles.label}>Product Name:</Text>
                     <Text style={styles.text}>{invoice.productName}</Text>
-                </View>
+                </View> */}
 
                 <View style={styles.columnContainer}>
                     <Text style={styles.label}>Date & Time:</Text>
@@ -75,10 +83,10 @@ const OrderDetails = () => {
                     <Text style={styles.text}>{invoice.customerName}</Text>
                 </View>
 
-                <View style={styles.columnContainer}>
+                {/* <View style={styles.columnContainer}>
                     <Text style={styles.label}>Warehouse Name:</Text>
                     <Text style={styles.text}>{invoice.warehouseName}</Text>
-                </View>
+                </View> */}
 
             </View>
         </>
@@ -113,6 +121,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
+        color: "black"
     },
     columnContainer: {
         flexDirection: "row",

@@ -9,10 +9,11 @@ const Button = ({title, onPress = () => {}}) => {
       style={{
         height: 55,
         width: '100%',
-        backgroundColor: COLORS.blue,
+        backgroundColor: COLORS.yellow,
         marginVertical: 20,
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: 10
       }}>
       <Text style={{color: COLORS.white, fontWeight: 'bold', fontSize: 18}}>
         {title}

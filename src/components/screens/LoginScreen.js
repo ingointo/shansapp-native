@@ -1,5 +1,6 @@
-import React from 'react';
-import { View, Text, Keyboard, StyleSheet, Image, Alert } from 'react-native'; // 1. Import AsyncStorage
+import React, { useState } from 'react';
+import { View, Text, Keyboard, StyleSheet, Image, Alert } from 'react-native';
+import { Checkbox } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import COLORS from '../../consts/colors';
 import Button from '../Button';
@@ -15,10 +16,10 @@ const LoginScreen = ({ navigation }) => {
   // destructuring Styles
   const { container, tinyLogo, imageContainer } = styles;
 
-  const [inputs, setInputs] = React.useState({ user_name: '', password: '' });
-  const [errors, setErrors] = React.useState({});
-  const [loading, setLoading] = React.useState(false);
-
+  const [inputs, setInputs] = useState({ user_name: '', password: '' });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [checked, setChecked] = useState(false);
   const validate = () => {
     Keyboard.dismiss();
     let isValid = true;
@@ -83,17 +84,11 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={container}>
       <Loader visible={loading} />
-      <View style={{ paddingTop: 50, paddingHorizontal: 20 }}>
+      <View style={{ paddingTop: 100, paddingHorizontal: 20 }}>
         <View style={imageContainer}>
           <Image style={tinyLogo} source={require('../../../assets/splash.png')} />
         </View>
-        <Text style={{ color: COLORS.black, fontSize: 40, fontWeight: 'bold' }}>
-          Shan's App login
-        </Text>
-        <Text style={{ color: COLORS.grey, fontSize: 18, marginVertical: 10 }}>
-          Enter Your Details to Login
-        </Text>
-        <View style={{ marginVertical: 20 }}>
+        <View style={{ marginVertical: 25, marginHorizontal: 25 }}>
           <Input
             onChangeText={(text) => handleOnchange(text, 'user_name')}
             onFocus={() => handleError(null, 'user_name')}
@@ -111,7 +106,21 @@ const LoginScreen = ({ navigation }) => {
             error={errors.password}
             password
           />
-          <Button title="Log In" onPress={validate} />
+           <View style={{ marginVertical: 5, flexDirection: "row", alignItems: "center"}}>
+          <Checkbox
+            status={checked ? 'checked' : 'unchecked'}
+            label="Item" 
+            onPress={() => {
+              setChecked(!checked);
+             
+            }}
+          />
+          <Text>I agree to the Privacy Policy</Text>
+          </View>
+          <Text style={styles.label}>Forgot Password ?</Text>
+        </View>
+        <View style={styles.bottom}>
+
           <Text
             onPress={() => navigation.navigate('RegistrationScreen')}
             style={{
@@ -120,8 +129,9 @@ const LoginScreen = ({ navigation }) => {
               textAlign: 'center',
               fontSize: 16,
             }}>
-            Don't have an account? Register
+           New User? Register Now
           </Text>
+              <Button title="Sign In" onPress={validate}/>
         </View>
       </View>
     </SafeAreaView>
@@ -134,12 +144,23 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
   },
   tinyLogo: {
-    width: 50,
-    height: 50,
+    width: 280,
+    height: 150,
   },
   imageContainer: {
     alignItems: 'center', // Center horizontally
     marginBottom: 20,
+  },
+  bottom: {
+    marginHorizontal: 60,
+    marginTop: 15,
+  },
+  label: {
+    marginVertical: 5,
+    fontSize: 14,
+    color: COLORS.grey,
+    marginLeft: 180, 
+    marginTop: 15
   },
 });
 
