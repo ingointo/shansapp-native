@@ -50,11 +50,11 @@ export default function ContactDetails({ route, navigation }) {
   }, [product]);
 
   const handleAddToProducts = () => {
-    if (product && quantity && price) { // Check if both quantity and price are provided
+    if (product && quantity && price) {
       const productWithDetails = { ...product, quantity: Number(quantity), price: Number(price) };
       setProducts((prevProducts) => [...prevProducts, productWithDetails]);
-      setQuantity("");
-      setPrice("");
+      setQuantity(1); // Set quantity back to 1 for the next product
+      setPrice(0); // Set price back to 0 for the next product
     }
   };
   console.log("Products array:", products);
@@ -117,7 +117,7 @@ export default function ContactDetails({ route, navigation }) {
           "unit_price": price,
           "discount_percentage": 0,
           "remarks": null,
-          "total": total,
+          "total": price*quantity,
           "unit_cost": 100,
           "total_cost": 100,
           "return_quantity": 0
@@ -151,6 +151,7 @@ export default function ContactDetails({ route, navigation }) {
     }).then(res => {
       console.log(res);
       console.log("success");
+      navigation.navigate('Contactsviewnav');
     }).catch(err => console.log(err))
   }
 
@@ -171,6 +172,7 @@ export default function ContactDetails({ route, navigation }) {
   };
 // const total = product.productCost * quantity
   return (
+    
     <View style={styles.container}>
       <View style={styles.details}>
         {/* check item found or not  */}
@@ -192,7 +194,7 @@ export default function ContactDetails({ route, navigation }) {
       </View>
       {/* Check if product is available */}
       {product && products.some((prod) => prod.productName === product.productName) && (
-        <ScrollView>
+        <ScrollView key={product._id}>
 
           <View style={styles.product}>
             <Text style={styles.productTitle}>{product.productName}</Text>
@@ -203,7 +205,7 @@ export default function ContactDetails({ route, navigation }) {
             <View style={styles.columnContainer}>
               <Text style={styles.productHeaderLabel}>Price:</Text>
               <View style={styles.priceContainer}>
-               <TextInput>{product.productCost}</TextInput>
+               <TextInput keyboardType="numeric" onChangeText={(text)=>{setPrice(parseFloat(text))} }  value={price.toString()}></TextInput>
               </View>
               <Text style={styles.priceText}>AED</Text>
             </View>
@@ -246,8 +248,8 @@ export default function ContactDetails({ route, navigation }) {
 
               <Text style={styles.productLabel}>Total Quantity: {quantity}</Text>
               <View style={{flexDirection: "row"}}>
-              <Text style={styles.productLabel}>Price ({quantity}) items  </Text>
-              <Text style={styles.productText}> {product.productCost * quantity} AED</Text>
+              <Text style={styles.productLabel}>Price items  </Text>
+              <Text style={styles.productText}> {price * quantity} AED</Text>
               </View>
               </View>
             <View style={styles.submitButtonContainer}>
