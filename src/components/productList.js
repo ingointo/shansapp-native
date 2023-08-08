@@ -11,7 +11,7 @@ const ProductList = ({ item ,contact}) => {
     const navigation = useNavigation();
     const { productName, productCost } = item
 
-    return (
+    return (          
         <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item, contact:contact})}>
             <View style={[styles.box]} >
                 <Image
@@ -30,7 +30,8 @@ const ProductList = ({ item ,contact}) => {
 const styles = StyleSheet.create({
     box: {
         marginTop: 25,
-        marginLeft: 45,
+        marginHorizontal: 15,
+        marginLeft: 10,
         width: 130,
         height: 140,
         borderRadius: 25,
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderWidth: 0.5,
         borderColor:"#ffa600"
-       
     },
     textFam: {
         fontFamily: "sans-serif",

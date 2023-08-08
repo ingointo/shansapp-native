@@ -26,28 +26,22 @@ const CustomSubmitButton = ({ title, onPress }) => {
   );
 };
 
-
 export default function ContactDetails({ route, navigation }) {
   const { item, product } = route.params;
   console.log("Product prop:", product);
-
-  if (product) {
-    const total = product.productCost
-  }
-
-  console.log(item, product)
-  const [products, setProducts] = useState([]);
-  const [quantity, setQuantity] = useState(1);
-  const [price, setPrice] = useState(0);
-  const [productPrice, setProductPrice] = useState();
-
+  const [price, setPrice] = useState();
 
   useEffect(() => {
-    // On initial load, set the products from route params
     if (product) {
+      const total = product.productCost;
+      setPrice(total);
       setProducts([product]);
     }
   }, [product]);
+ 
+  console.log(item, product)
+  const [products, setProducts] = useState([]);
+  const [quantity, setQuantity] = useState(1);
 
   const handleAddToProducts = () => {
     if (product && quantity && price) {
@@ -170,7 +164,7 @@ export default function ContactDetails({ route, navigation }) {
       prevProducts.filter((prod) => prod.productName !== productNameToRemove)
     );
   };
-// const total = product.productCost * quantity
+  
   return (
     
     <View style={styles.container}>

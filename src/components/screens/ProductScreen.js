@@ -137,6 +137,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffa600",
         paddingHorizontal: 10, 
     },
+    productListContainer: {
+        
+        alignItems: "center"
+    }
    
 });
 

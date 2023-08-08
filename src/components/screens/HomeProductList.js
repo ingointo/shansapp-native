@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Image } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Image, ScrollView } from "react-native";
 import { useNavigation } from '@react-navigation/native'
 
 const HomeProductList = ({ item }) => {
@@ -12,21 +12,27 @@ const HomeProductList = ({ item }) => {
 
     return (
 
-        <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item })}>
-            <View style={[styles.box]} >
-                <Image
-                    style={styles.tinyLogo}
-                    source={{
-                        uri: 'https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_1280.jpg',
-                    }}
-                />
-                <View style={styles.bottomContainer}>
-                    <Text style={styles.bottomText}>New Lowest Price</Text>
+
+
+            <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item })}>
+                <View style={[styles.box]} >
+                    <Image
+                        style={styles.tinyLogo}
+                        source={{
+                            uri: 'https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_1280.jpg',
+                        }}
+                    />
+                    <View style={styles.bottomContainer}>
+                        <Text style={styles.bottomText}>New Lowest Price</Text>
+                    </View>
+                    <Text style={styles.textFam}>{productName}</Text>
+                    <Text style={styles.textPrice}>Price : {productCost} QAR</Text>
                 </View>
-                <Text style={styles.textFam}>{productName}</Text>
-                <Text style={styles.textPrice}>Price : {productCost} QAR</Text>
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+   
+
+        
+
 
     );
 }
@@ -34,15 +40,14 @@ const HomeProductList = ({ item }) => {
 const styles = StyleSheet.create({
     box: {
         marginTop: 25,
-        marginHorizontal: 30,
-        width: 140,
+        marginHorizontal: 5,
+        width: 150,
         height: 140,
         borderRadius: 25,
         justifyContent: "center",
         alignItems: "center",
         borderWidth: 0.5,
         borderColor: "#ffa600"
-
     },
     textFam: {
         fontFamily: "sans-serif",
@@ -67,11 +72,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         color: "white",
         alignItems: "center",
-        marginTop: 8 
+        marginTop: 8
     },
     bottomText: {
         color: "white",
-    }
+    },
+
 });
 
 export default HomeProductList;
