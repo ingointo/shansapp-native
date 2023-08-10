@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet,Text,View,TextInput,Button, ScrollView,TouchableOpacity,Alert } from "react-native";
-import baseUrl from "../../api/const"
+import { baseUrl } from "../../api/const";
 import { Formik } from "formik";
 import { Picker } from "@react-native-community/picker";
 import { useState } from "react";
@@ -23,13 +23,15 @@ export const AddSchema= Yup.object().shape({
 
 
 export default function Addcontact(){
-    const contactUrl='http://137.184.67.138:3004/createCustomer';
-    const languageUrl='http://137.184.67.138:3004/viewLanguage/language_list/language_dropdown';
-    const stateUrl='http://137.184.67.138:3004/viewState/state_list/state_drop_down';
-    const areaUrl='http://137.184.67.138:3004/viewArea/area_list/drop_down';
-    const countryUrl='http://137.184.67.138:3004/viewCountry/country_list/country_dropdown';
-    const currencyUrl='http://137.184.67.138:3004/viewCurrency/currency_list/currency_dropdown';
-    const imageUrl='http://137.184.67.138:3004/fileUpload';
+
+    
+    const contactUrl=`${baseUrl}/createCustomer`;
+    const languageUrl=`${baseUrl}/viewLanguage/language_list/language_dropdown`;
+    const stateUrl=`${baseUrl}/viewState/state_list/state_drop_down`;
+    const areaUrl=`${baseUrl}/viewArea/area_list/drop_down`;
+    const countryUrl=`${baseUrl}/viewCountry/country_list/country_dropdown`;
+    const currencyUrl=`${baseUrl}/viewCurrency/currency_list/currency_dropdown`;
+    const imageUrl=`${baseUrl}/fileUpload`;
     const navigation=useNavigation();
 
 
