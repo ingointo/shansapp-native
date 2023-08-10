@@ -14,12 +14,7 @@ export const AddSchema= Yup.object().shape({
     name:Yup.string().required('Please enter your Name'),
     customer_mobile:Yup.number().required('Please enter you Phone Number'),
     customer_email:Yup.string().email('Invalid email').required("Please etner you email"),
-
-
 })
-
-
-
 
 
 export default function Addcontact(){
