@@ -16,6 +16,9 @@ import ContactDetails from "./src/components/screens/ContactDetails";
 import ProductDetails from "./src/components/screens/ProductDetails";
 import MyOrdersScreen from "./src/components/screens/Myorders";
 import OrderDetails from "./src/components/screens/OrderDetails"
+import CashCollection from "./src/components/screens/CashCollection";
+import NewCollection from "./src/components/screens/NewCollection";
+import Scanner from "./src/components/QrScanner/Scanner";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +50,9 @@ const App = () => {
           <Stack.Screen name="ProductDetails" component={ProductDetails} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, title: "Product Details" }} />
           <Stack.Screen name="Myorders" component={MyOrdersScreen} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, title: "Invoice Details" }} />
           <Stack.Screen name="OrderDetails" component={OrderDetails} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, title: "Invoice Details" }} />
+          <Stack.Screen name="CashCollection" component={CashCollection} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: true, title: "Cash Collection" }} />
+          <Stack.Screen name="NewCollection" component={NewCollection} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: true, title: "New Collection" }} />
+          <Stack.Screen name="Scanner" component={Scanner} options={{ headerStyle: { backgroundColor: '#ffa600' }, headerShown: false, title: "Scanner" }} />
         </Stack.Navigator>
       </View>
     </NavigationContainer>

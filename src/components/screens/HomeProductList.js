@@ -10,6 +10,16 @@ const HomeProductList = ({ item }) => {
     const navigation = useNavigation();
     const { productName, productCost } = item
 
+    const getShortProductName = (productName, maxLength) => {
+        if (productName.length <= maxLength) {
+            return productName;
+        } else {
+            return productName.substring(0, maxLength) + '...';
+        }
+    };
+
+    const shortenedProductName = getShortProductName(productName, 20);
+
     return (
 
 
@@ -25,7 +35,7 @@ const HomeProductList = ({ item }) => {
                     <View style={styles.bottomContainer}>
                         <Text style={styles.bottomText}>New Lowest Price</Text>
                     </View>
-                    <Text style={styles.textFam}>{productName}</Text>
+                    <Text style={styles.textFam}>{shortenedProductName}</Text>
                     <Text style={styles.textPrice}>Price : {productCost} QAR</Text>
                 </View>
             </TouchableOpacity>
@@ -42,7 +52,7 @@ const styles = StyleSheet.create({
         marginTop: 25,
         marginHorizontal: 5,
         width: 150,
-        height: 140,
+        height: 150,
         borderRadius: 25,
         justifyContent: "center",
         alignItems: "center",
@@ -55,7 +65,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         marginTop: 3,
         color: "black",
-        fontSize: 15,
+        fontSize: 14,
         letterSpacing: 0.3
     },
     tinyLogo: {

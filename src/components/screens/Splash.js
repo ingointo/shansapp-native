@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import LoginScreen from './LoginScreen';
 import OptionScreen from './OptionScreen';
 import BottomDrawer from '../../routes/BottomDrawer';
+import NewCollection from './NewCollection';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -49,8 +50,8 @@ const Splash = () => {
 
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <LoginScreen navigation={navigation} />
-      {/* <BottomDrawer/> */}
+      {/* <LoginScreen navigation={navigation} /> */}
+      <BottomDrawer/>
     </View>
   )
 }

@@ -164,7 +164,7 @@ export default function ContactDetails({ route, navigation }) {
       prevProducts.filter((prod) => prod.productName !== productNameToRemove)
     );
   };
-  
+
   return (
     
     <View style={styles.container}>

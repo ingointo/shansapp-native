@@ -1,17 +1,11 @@
-changed contact details to item found or not because of fixing errrors
-
-changed syles option screen container
-eg: 
-
-my first dropdown new Collection
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import { Picker } from "@react-native-community/picker";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 
 const CustomButton = ({ title, onPress }) => {
-    
+
     return (
         <TouchableOpacity style={[styles.buttonContainer]} onPress={onPress}>
             <View style={styles.buttonContent}>
@@ -31,10 +25,30 @@ const CustomSubmitButton = ({ title, onPress }) => {
     );
 };
 const NewCollection = () => {
+    const route = useRoute();
     const navigation = useNavigation()
     const [collectionType, setCollectionType] = useState('');
-    const [selectedCustomer, setSelectedCustomer] = useState('');
-    
+    // const [selectedCustomer, setSelectedCustomer] = useState('');
+
+    const scannedData = route.params?.scannedData;
+
+    const fetchCustomerDetails = async () => {
+        try {
+            const response = await axios.get(`http://137.184.67.138:3016/viewInvoice?sequence_no=${scannedData}`);
+            const customerData = response.data; // Assuming the response contains the customer details
+            console.log(customerData);
+            // setCustomerName(customerData.customer_name);
+        } catch (error) {
+            console.error('Error fetching customer details:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCustomerDetails()
+    })
+
+    console.log("scannedData-----------", scannedData)
+
     return (
         <ScrollView>
 
@@ -76,18 +90,6 @@ const NewCollection = () => {
                 </View>
                 <View style={styles.customerBorder}>
                     <View style={styles.customerContent}>
-                       
-                        {/* <View style={styles.dropdown}>
-                            <Picker
-                                selectedCustomer={selectedCustomer}
-                                onValueChange={(itemValue, itemIndex) => setSelectedCustomer(itemValue)}
-                            >
-                                <Picker.Item label="Select Customer" value="" />
-                                <Picker.Item label="Option 1" value="option1" />
-                                <Picker.Item label="Option 2" value="option2" />
-                                <Picker.Item label="Option 3" value="option3" />
-                            </Picker>
-                        </View> */}
                         <Text style={styles.label}>Customer: </Text>
                         <TextInput
                             style={styles.input}
@@ -108,7 +110,7 @@ const NewCollection = () => {
                         />
                         <View style={styles.customerBottom}>
                             <Text style={styles.qrLabel}>Update from Qr code?</Text>
-                            <CustomButton title="Scan" onPress={()=> navigation.navigate('Scanner')}/>
+                            <CustomButton title="Scan" onPress={() => navigation.navigate('Scanner')} />
                         </View>
                     </View>
 
@@ -125,7 +127,7 @@ const NewCollection = () => {
                 <View style={styles.signatureContainer}>
                     {/* signature  */}
                 </View>
-                <CustomSubmitButton title="Submit"  />
+                <CustomSubmitButton title="Submit" />
             </View>
         </ScrollView>
     )

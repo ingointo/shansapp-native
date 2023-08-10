@@ -70,6 +70,9 @@ const OptionScreen = () => {
                 </View>
             </View>
             <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                <TouchableOpacity
+                 onPress={() => navigation.navigate('CashCollection')}>
+
                 <View style={[styles.boxDiffer, { backgroundColor: '#ebebeb' }]} >
                     <Image
                         source={require('../../../assets/optionsIcons/cashCollection.png')}
@@ -78,6 +81,7 @@ const OptionScreen = () => {
                     />
                     <Text style={styles.textFam}>Cash Collection</Text>
                 </View>
+                </TouchableOpacity>
             </View>
         </View>
     );

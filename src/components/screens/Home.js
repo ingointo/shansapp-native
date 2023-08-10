@@ -78,7 +78,7 @@ export default function Home() {
                     <CustomButton title="Contacts" color="#3c7dff" onPress={() => navigation.navigate('Contactsviewnav')} />
                 </View>
             </View>
-            <View style={{flex: 1}}>
+            <View style={{flex:1}}>
                 <View style={styles.productListContainer}>
                     <FlatList
                         data={filteredProducts}
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: '#222222',
         paddingVertical: 15,
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
         borderRadius: 12,
         alignItems: 'center',
         marginHorizontal: 5
@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         marginTop: 18,
-       
     },
     imageContainer: {
         flexDirection: "row",

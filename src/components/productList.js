@@ -11,6 +11,16 @@ const ProductList = ({ item ,contact}) => {
     const navigation = useNavigation();
     const { productName, productCost } = item
 
+    const getShortProductName = (productName, maxLength) => {
+        if (productName.length <= maxLength) {
+            return productName;
+        } else {
+            return productName.substring(0, maxLength) + '...';
+        }
+    };
+
+    const shortenedProductName = getShortProductName(productName, 20);
+
     return (          
         <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { item: item, contact:contact})}>
             <View style={[styles.box]} >
@@ -20,7 +30,7 @@ const ProductList = ({ item ,contact}) => {
                         uri: 'https://cdn.pixabay.com/photo/2014/08/05/10/30/iphone-410324_1280.jpg',
                     }}
                 />
-                <Text style={styles.textFam}>{productName}</Text>
+                <Text style={styles.textFam}>{shortenedProductName}</Text>
                 <Text style={styles.textPrice}>Price : {productCost} QAR</Text>
             </View>
         </TouchableOpacity>
